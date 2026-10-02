@@ -38,6 +38,7 @@ public class MvcGameJavaFxLauncher extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         IGameGraphics gameGraphics = new GameGraphics(new JavaFxGraphics(gc));
         ArrayList<String> pressedKeysCodes = new ArrayList<>();
+        //register event handlers in JavaFX
         theScene.setOnKeyPressed(
                 e -> {
                     String code = e.getCode().toString();
