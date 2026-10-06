@@ -2,9 +2,11 @@ package cz.cvut.fit.niadp.mvcgame.view;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.controller.GameController;
+import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.niadp.mvcgame.visitor.GameDrawer;
+import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 
 public class GameView implements IObserver{
     private final IGameModel model;
@@ -26,7 +28,7 @@ public class GameView implements IObserver{
     public void render() {
         if(gameGraphics != null) {
             gameGraphics.clear();
-            gameGraphics.drawBackground();
+            gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0,0));
             model.getGameObjects().forEach(gameObject -> gameObject.accept(gameDrawer));
         }
     }
