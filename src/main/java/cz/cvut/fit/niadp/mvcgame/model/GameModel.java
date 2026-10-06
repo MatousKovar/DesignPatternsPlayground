@@ -5,12 +5,14 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
 import cz.cvut.fit.niadp.mvcgame.observer.IObserver;
@@ -24,6 +26,7 @@ public class GameModel implements IGameModel{
     private final AbstractCannon cannon;
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
+    private final Set<AbstractEnemy> enemies;
     private IGameObjectsFactory factory;
     protected IMovingStrategy movingStrategy;
     protected final Queue<AbstractGameCommand> unexecutedCommands;
@@ -34,6 +37,7 @@ public class GameModel implements IGameModel{
         observers = new HashSet<IObserver>();
         cannon = factory.createCannon();
         missiles = new HashSet<AbstractMissile>();
+        enemies = new HashSet<AbstractEnemy>();
         movingStrategy = new RealMovingStrategy();
         unexecutedCommands = new LinkedBlockingQueue<>();
         executedCommands = new Stack<>();
@@ -89,6 +93,23 @@ public class GameModel implements IGameModel{
         notifyObservers();
     }
 
+    public void spawnNewEnemy(){
+        int x_size = (MvcGameConfig.MAX_X - MvcGameConfig.MIN_X);
+        int y_size = (MvcGameConfig.MAX_Y - MvcGameConfig.MIN_Y);
+
+        int minSpawnX = MvcGameConfig.MIN_X + x_size * 20 / 100;
+        int minSpawnY = MvcGameConfig.MIN_Y + y_size * 20 / 100;
+        int maxSpawnY = MvcGameConfig.MAX_Y - y_size * 20 / 100;
+
+        int x = ThreadLocalRandom.current().nextInt(minSpawnX, MvcGameConfig.MAX_X);
+        int y = ThreadLocalRandom.current().nextInt(minSpawnY, maxSpawnY);
+
+        Position spawnPosition = new Position(x, y);
+        AbstractEnemy new_enemy = factory.createEnemy(spawnPosition);
+        enemies.add(new_enemy);
+        notifyObservers();
+    }
+
     public void aimCannonUp() {
         cannon.aimUp();
         notifyObservers();
@@ -113,6 +134,7 @@ public class GameModel implements IGameModel{
     public Set<GameObject> getGameObjects(){
         var gameObjects = new HashSet<GameObject>();
         gameObjects.addAll(missiles);
+        gameObjects.addAll(enemies);
         gameObjects.add(cannon);
         return gameObjects;
     }
@@ -170,13 +192,21 @@ public class GameModel implements IGameModel{
     private static class Memento{
         private int cannonPositionX;
         private int cannonPositionY;
-        // game snapshot
+        private Set<AbstractMissile> missiles;
+        private Set<IObserver> observers;
+        private Set<AbstractEnemy> enemies;
+        
+        // fronta prikazu a takovy ty veci mozna jeste?
     }
 
     public Object createMemento(){
         Memento gameModelSnapshot = new Memento();
         gameModelSnapshot.cannonPositionX = cannon.getPosition().getX();
         gameModelSnapshot.cannonPositionY = cannon.getPosition().getY();
+        gameModelSnapshot.missiles = this.missiles;
+        gameModelSnapshot.observers = this.observers;
+        gameModelSnapshot.enemies = this.enemies; 
+        
         return gameModelSnapshot;
     }
 
@@ -184,6 +214,9 @@ public class GameModel implements IGameModel{
         Memento gameModelSnapshot = (Memento)memento;
         cannon.getPosition().setX(gameModelSnapshot.cannonPositionX);
         cannon.getPosition().setY(gameModelSnapshot.cannonPositionY);
+        this.missiles.addAll(gameModelSnapshot.missiles);
+        this.observers.addAll(gameModelSnapshot.observers);
+        this.enemies.addAll(gameModelSnapshot.enemies);
     }
 
     @Override

@@ -17,3 +17,4 @@
 - visitor podle skinu vykresluje jakej druh enemy se ma vykreslit
 - mozna by bylo dobre mit state a udelat tam ze treba enemy ma vice zivotu nebo tak neco
 - enemy dostava random skin pri vytvoreni
+- enemy je mozne tvorit pomoci factory - controller bere SPAWN_ENEMY_STRIN

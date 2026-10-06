@@ -34,4 +34,5 @@ public interface IGameModel extends IObservable {
     public void setMemento(Object memento);
     public void registerCommand(AbstractGameCommand command);
     public void undoLastCommand();
+    public void spawnNewEnemy();
 }

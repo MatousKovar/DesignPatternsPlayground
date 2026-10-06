@@ -14,6 +14,7 @@ import cz.cvut.fit.niadp.mvcgame.strategy.RealMovingStrategy;
 import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 
 public class GameModelProxy implements IGameModel{
+    
     private final GameModel subject;
 
     public GameModelProxy(GameModel subject){
@@ -138,5 +139,10 @@ public class GameModelProxy implements IGameModel{
     @Override
     public void undoLastCommand() {
         subject.undoLastCommand();
+    }
+
+    @Override
+    public void spawnNewEnemy() {
+        subject.spawnNewEnemy();
     }
 }

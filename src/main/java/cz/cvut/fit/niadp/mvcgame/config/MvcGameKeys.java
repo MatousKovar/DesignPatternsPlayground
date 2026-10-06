@@ -23,6 +23,6 @@ public class MvcGameKeys {
     public static final String UNDO_LAST_COMMAND_KEY = "C";
 
 
-    public static final String SPAWN_ENEMY_STRING = "O";
+    public static final String SPAWN_ENEMY_KEY = "O";
 
 }

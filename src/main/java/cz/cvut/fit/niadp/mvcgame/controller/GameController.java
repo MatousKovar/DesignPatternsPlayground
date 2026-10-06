@@ -48,6 +48,9 @@ public class GameController {
                 case MvcGameKeys.TOGGLE_SHOOTING_MODE_KEY:
                     model.toggleShootingMode();
                     break;
+                case MvcGameKeys.SPAWN_ENEMY_KEY:
+                    model.spawnNewEnemy();
+                    break;
                 case MvcGameKeys.STORE_GAME_SNAPSHOT_KEY:
                     CareTaker.getInstance().createMemento();
                     break;
