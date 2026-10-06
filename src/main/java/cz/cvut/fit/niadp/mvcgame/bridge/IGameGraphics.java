@@ -7,4 +7,5 @@ public interface IGameGraphics {
     void drawText(String text, Position position);
     void drawRectangle(Position leftTop, Position rightBottom);
     void clear();
+    void drawBackground();
 }
