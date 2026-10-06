@@ -1,6 +1,6 @@
 # Povinná část semestrální práce
 
-- [ ] Pozadi    
+- [x] Pozadi    
 - [ ] Přidat nepřátele
 - [ ] Přidat kolize (po zásahu nepřátele raketou)
 - [ ] Přidat GameInfo (text zobrazující skóre a další informace jako například úhel kanónu, sílu kanónu, mód kanónu atd.)
@@ -11,3 +11,9 @@
 - [ ] Přidat 3 další návrhové vzory
 - [ ] Přidat 5 zajímavých funkcionalit hry
 
+## Enemy
+- nova trida vytvorena AbstractEnemy
+- enemy maji vice skinu - proto EnemySkin.java enum
+- visitor podle skinu vykresluje jakej druh enemy se ma vykreslit
+- mozna by bylo dobre mit state a udelat tam ze treba enemy ma vice zivotu nebo tak neco
+- enemy dostava random skin pri vytvoreni

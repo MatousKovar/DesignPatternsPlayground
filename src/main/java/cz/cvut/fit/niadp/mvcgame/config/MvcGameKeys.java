@@ -22,4 +22,7 @@ public class MvcGameKeys {
     public static final String RESTORE_GAME_SNAPSHOT_KEY = "X";
     public static final String UNDO_LAST_COMMAND_KEY = "C";
 
+
+    public static final String SPAWN_ENEMY_STRING = "O";
+
 }
