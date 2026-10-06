@@ -66,3 +66,19 @@ Strategy:
 State:
   objekt má aktuální režim, který mění jeho chování
 
+## Command 
+- pracuje se s nim jako s objektem - takze se muze delat napriklad fronta nebo odlozit to provedeni na pozdeji a tak
+- zde model registruje commandy pomoci registerCommand 
+GameController
+  -> vytvoří MoveCannonUpCommand
+  -> GameModel.registerCommand() uloží příkaz do fronty
+  -> GameModel.update() příkaz vyzvedne
+  -> doExecute() uloží snapshot a zavolá execute()
+  -> model.moveCannonUp()
+  -> příkaz se uloží do historie
+- **Command zaroven tvori memento, tak aby byl schopny efekt commandu vratit**
+
+## Bridge
+- cilem je snadne vymeneni jedne komponenty za druhou
+- zde to je graficka vrstva
+
