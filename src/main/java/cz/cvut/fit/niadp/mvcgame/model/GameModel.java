@@ -31,9 +31,11 @@ public class GameModel implements IGameModel{
     protected IMovingStrategy movingStrategy;
     protected final Queue<AbstractGameCommand> unexecutedCommands;
     protected final Stack<AbstractGameCommand> executedCommands;
+    protected int score;
 
     public GameModel(){
         factory = new GameObjectsFactoryA(this);
+        score = 0;
         observers = new HashSet<IObserver>();
         cannon = factory.createCannon();
         missiles = new HashSet<AbstractMissile>();
@@ -44,10 +46,19 @@ public class GameModel implements IGameModel{
     }
 
     public void update() {
-        // remove killed enemies
         moveMissiles();
         executeCommands();
+        // checkCollissions();
         // check for collisions
+    }
+
+    // TODO - checking collission will remove enemies if hitted plus will probably increase score
+    private void checkCollissions()
+    {
+        for (AbstractMissile missile : missiles){
+            //TODO
+        }
+
     }
 
     private void executeCommands(){

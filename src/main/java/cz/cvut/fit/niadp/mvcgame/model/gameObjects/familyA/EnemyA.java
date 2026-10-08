@@ -1,7 +1,8 @@
 package cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA;
 
 import java.util.concurrent.ThreadLocalRandom;
-import cz.cvut.fit.niadp.mvcgame.model.gameObjects.EnemySkin;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.EnemyType;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
 import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
@@ -14,11 +15,12 @@ public class EnemyA extends AbstractEnemy {
     public EnemyA (Position position, IGameObjectsFactory gameFactory){
         this.position = position;
         this.gameFactory = gameFactory;
-
-        //random skin on creation
-        EnemySkin[] skins = EnemySkin.values();
-        int randomIndex = ThreadLocalRandom.current().nextInt(skins.length);
-        this.skin = skins[randomIndex];
+        
+        //random skin on creatiPon - to by melo resit mozna neco jineho nez enemy ten sking???
+        EnemyType[] types = EnemyType.values();
+        int randomIndex = ThreadLocalRandom.current().nextInt(types.length);
+        this.type = types[randomIndex];
+        this.hitbox = new Hitbox(position, type.getHitboxWidth(), type.getHitboxHeight());
     }
 
     @Override 
