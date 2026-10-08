@@ -2,7 +2,7 @@ package cz.cvut.fit.niadp.mvcgame.abstractFactory;
 
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
-import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileType;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.CannonA;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.EnemyA;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.MissileA;
@@ -28,7 +28,7 @@ public class GameObjectsFactoryA implements IGameObjectsFactory{
             initAngle,
             initVelocity,
             model.getMovingStrategy(),
-            MissileType.FIRST
+            MissileSkinType.FIRST
         );
     }
 

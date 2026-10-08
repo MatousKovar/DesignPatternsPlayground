@@ -1,7 +1,7 @@
 package cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA;
 
 import java.util.concurrent.ThreadLocalRandom;
-import cz.cvut.fit.niadp.mvcgame.model.gameObjects.EnemyType;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.EnemySkinType;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
 import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
@@ -17,7 +17,7 @@ public class EnemyA extends AbstractEnemy {
         this.gameFactory = gameFactory;
         
         //random skin on creatiPon - to by melo resit mozna neco jineho nez enemy ten sking???
-        EnemyType[] types = EnemyType.values();
+        EnemySkinType[] types = EnemySkinType.values();
         int randomIndex = ThreadLocalRandom.current().nextInt(types.length);
         this.type = types[randomIndex];
         this.hitbox = new Hitbox(position, type.getHitboxWidth(), type.getHitboxHeight());

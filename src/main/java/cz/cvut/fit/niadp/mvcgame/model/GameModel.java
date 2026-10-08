@@ -48,17 +48,26 @@ public class GameModel implements IGameModel{
     public void update() {
         moveMissiles();
         executeCommands();
-        // checkCollissions();
-        // check for collisions
+        checkCollissions();
     }
 
-    // TODO - checking collission will remove enemies if hitted plus will probably increase score
     private void checkCollissions()
     {
-        for (AbstractMissile missile : missiles){
-            //TODO
+        Set<AbstractEnemy> enemiesToRemove = new HashSet<>();
+
+        for (AbstractEnemy enemy : enemies) {
+            for (AbstractMissile missile : missiles) {
+                if (enemy.getHitbox().overlaps(missile.getHitbox())) {
+                    enemiesToRemove.add(enemy);
+                    break;
+                }
+            }
         }
 
+        boolean removedEnemies = enemies.removeAll(enemiesToRemove);
+        if (removedEnemies) {
+            notifyObservers();
+        }
     }
 
     private void executeCommands(){

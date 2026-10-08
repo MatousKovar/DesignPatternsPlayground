@@ -26,7 +26,7 @@ public class GameDrawer implements IVisitor{
 
     @Override 
     public void visit(AbstractEnemy enemy){
-        drawGameObject(enemy, enemy.getEnemyType().getImagePath());
+        drawGameObject(enemy, enemy.getEnemySkinType().getImagePath());
     }
 
     protected void drawGameObject(GameObject gameObject, String resource){

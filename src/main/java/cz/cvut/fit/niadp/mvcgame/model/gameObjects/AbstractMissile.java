@@ -10,9 +10,9 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     private final int initVelocity;
     protected IMovingStrategy movingStrategy;
     protected Hitbox hitbox;
-    protected MissileType type;
+    protected MissileSkinType type;
 
-    protected AbstractMissile(Position initPosition, double initAngle, int initVelocity, IMovingStrategy movingStrategy, MissileType type) {
+    protected AbstractMissile(Position initPosition, double initAngle, int initVelocity, IMovingStrategy movingStrategy, MissileSkinType type) {
         super(initPosition);
         this.initAngle = initAngle;
         this.initVelocity = initVelocity;
@@ -30,6 +30,10 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     }
     public int getInitVelocity() {
         return initVelocity;
+    }
+
+    public Hitbox getHitbox(){
+        return this.hitbox;
     }
 
     public void move(){

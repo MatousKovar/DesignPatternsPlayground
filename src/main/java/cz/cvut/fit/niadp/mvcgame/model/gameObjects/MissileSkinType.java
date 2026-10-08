@@ -2,11 +2,15 @@ package cz.cvut.fit.niadp.mvcgame.model.gameObjects;
 
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 
-public enum MissileType {
+public enum MissileSkinType {
 
     FIRST(MvcGameResources.MISSILE_RESOURCE,30,29);
+    
+    private final int width;
+    private final int height;
+    private final String imagePath; 
 
-    private MissileType(String imagePath, int width, int height){
+    private MissileSkinType(String imagePath, int width, int height){
         this.height = height;
         this.width = width;
         this.imagePath = imagePath;
@@ -24,7 +28,5 @@ public enum MissileType {
         return this.imagePath;
     }
 
-    private int width;
-    private int height;
-    private String imagePath; 
+   
 }
