@@ -27,6 +27,10 @@ public  abstract class AbstractCannon extends GameObject {
     public abstract int getCannonPower();
     public abstract Position getCannonPosition();
 
+    public String getShootingModeName(){
+        return shootingMode.getName();
+    }
+
     public void accept(IVisitor visitor){
         visitor.visit(this);
     }

@@ -1,7 +1,6 @@
 package cz.cvut.fit.niadp.mvcgame.model;
 
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
-import cz.cvut.fit.niadp.mvcgame.state.IShootingMode;
 import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
 
 public class GameInfo
@@ -9,14 +8,11 @@ public class GameInfo
     private int score;
     private AbstractCannon cannon;
     private IMovingStrategy strategy;
-    private IShootingMode shootingMode;
 
-    public GameInfo(AbstractCannon cannon, IMovingStrategy strategy, IShootingMode shootingMode)
+    public GameInfo(AbstractCannon cannon, IMovingStrategy strategy)
     {
         score = 0;
         this.cannon = cannon;
-        this.strategy = strategy;
-        this.shootingMode = shootingMode;
     }
 
     public void increaseScore(int value)
@@ -42,7 +38,7 @@ public class GameInfo
     }
 
     public String getShootingMode(){
-        return shootingMode.getName();
+        return cannon.getShootingModeName();
     }
 
     

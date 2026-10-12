@@ -9,7 +9,7 @@ import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 
 public class EnemyA extends AbstractEnemy {
-
+    private static final int SCORE_FOR_KILL = 10;
     private IGameObjectsFactory gameFactory; // Todo - enemy kdyz umre tak bude na svem miste vytvaret nejaky time limited object
 
     public EnemyA (Position position, IGameObjectsFactory gameFactory){
@@ -26,5 +26,10 @@ public class EnemyA extends AbstractEnemy {
     @Override 
     public void accept(IVisitor visitor){
         visitor.visit(this);
+    }
+
+    @Override
+    public int getScoreForKill() {
+        return SCORE_FOR_KILL;
     }
 }

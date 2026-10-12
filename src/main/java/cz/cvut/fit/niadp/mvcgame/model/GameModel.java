@@ -15,6 +15,7 @@ import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
+import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
@@ -32,6 +33,7 @@ public class GameModel implements IGameModel{
     protected final Queue<AbstractGameCommand> unexecutedCommands;
     protected final Stack<AbstractGameCommand> executedCommands;
     protected int score;
+    private GameInfo gameInfo;
 
     public GameModel(){
         factory = new GameObjectsFactoryA(this);
@@ -41,6 +43,7 @@ public class GameModel implements IGameModel{
         missiles = new HashSet<AbstractMissile>();
         enemies = new HashSet<AbstractEnemy>();
         movingStrategy = new RealMovingStrategy();
+        gameInfo = new GameInfo(cannon,movingStrategy);
         unexecutedCommands = new LinkedBlockingQueue<>();
         executedCommands = new Stack<>();
     }
@@ -59,6 +62,7 @@ public class GameModel implements IGameModel{
             for (AbstractMissile missile : missiles) {
                 if (enemy.getHitbox().overlaps(missile.getHitbox())) {
                     enemiesToRemove.add(enemy);
+                    gameInfo.increaseScore(enemy.getScoreForKill());
                     break;
                 }
             }

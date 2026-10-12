@@ -11,5 +11,7 @@ public abstract class AbstractEnemy extends GameObject {
     public Hitbox getHitbox(){
         return this.hitbox;
     }
+
+    public abstract int getScoreForKill();
     
 }
