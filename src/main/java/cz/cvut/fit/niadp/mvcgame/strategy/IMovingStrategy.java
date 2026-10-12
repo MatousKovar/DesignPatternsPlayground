@@ -7,4 +7,6 @@ public interface IMovingStrategy {
     public void updatePosition(AbstractMissile missile); 
 
     public IMovingStrategy getNextStrategy(GameModel model);
+
+    public String getName();
 }

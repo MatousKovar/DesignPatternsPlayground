@@ -28,5 +28,10 @@ public class RandomMovingStrategy implements IMovingStrategy {
     public IMovingStrategy getNextStrategy(GameModel model) {
         return model.getNextMovingStrategy(this);
     }
+
+    @Override 
+    public String getName(){
+        return "RANDOM";
+    }
    
 }

@@ -16,4 +16,10 @@ public class SimpleMovingStrategy implements IMovingStrategy{
     public IMovingStrategy getNextStrategy(GameModel model) {
         return model.getNextMovingStrategy(this);
     }
+
+     @Override 
+    public String getName(){
+        return "SIMPLE";
+    }
+   
 }
