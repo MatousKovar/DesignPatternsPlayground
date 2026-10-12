@@ -207,6 +207,7 @@ public class GameModel implements IGameModel{
 
     public void toggleShootingMode(){
         cannon.toggleShootingMode();
+        notifyObservers();
     }
 
     private static class Memento{

@@ -19,14 +19,14 @@
 - enemy dostava random skin pri vytvoreni
 - enemy je mozne tvorit pomoci factory - controller bere SPAWN_ENEMY_STRIN
 
+## Flyweight
+- mame objekt enemy a missle, tyto objekty mohou mit type - hlavne co se tyce skinu - to je cesta ke skinu a velikost hitboxu
+- takze MissileType a EnemyType je flyweight object
+
 ## Kolize
 - pridanej atribut Hitbox k AbstractEnemy a AbstractMissile - uchovava pozici a sirku a vysku a umi overlaps - takze bude obsahovat logiku kolize
 - cela kolize bude osetrena v modelu v update()
 - kolize by mohla vytvorit lifetimeLimited object - exploze
-
-## Flyweight
-- mame objekt enemy a missle, tyto objekty mohou mit type - hlavne co se tyce skinu - to je cesta ke skinu a velikost hitboxu
-- takze MissileType a EnemyType je flyweight object
 
 ## Nápady po dokončení povinné části
 - [ ] Přidat menu s volbami Play a Level editor.

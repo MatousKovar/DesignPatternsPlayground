@@ -2,8 +2,14 @@ package cz.cvut.fit.niadp.mvcgame.controller;
 
 import java.util.List;
 
+import cz.cvut.fit.niadp.mvcgame.command.AimCannonDownCommand;
+import cz.cvut.fit.niadp.mvcgame.command.AimCannonUpCommand;
+import cz.cvut.fit.niadp.mvcgame.command.CannonPowerDownCommand;
+import cz.cvut.fit.niadp.mvcgame.command.CannonPowerUpCommand;
+import cz.cvut.fit.niadp.mvcgame.command.CannonShootCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonDownCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonUpCommand;
+import cz.cvut.fit.niadp.mvcgame.command.ToggleShootingModeCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameKeys;
 import cz.cvut.fit.niadp.mvcgame.memento.CareTaker;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
@@ -25,28 +31,28 @@ public class GameController {
                     model.registerCommand(new MoveCannonDownCommand(model));
                     break;
                 case MvcGameKeys.SPACE_KEY:
-                    model.cannonShoot();
+                    model.registerCommand(new CannonShootCommand(model));
                     break;
                 case MvcGameKeys.ESCAPE_KEY:
                     System.exit(0);
                     break;
                 case MvcGameKeys.AIM_UP_KEY:
-                    model.aimCannonUp();
+                    model.registerCommand(new AimCannonUpCommand(model));
                     break;
                 case MvcGameKeys.AIM_DOWN_KEY:
-                    model.aimCannonDown();
+                    model.registerCommand(new AimCannonDownCommand(model));
                     break;
                 case MvcGameKeys.POWER_UP_KEY:
-                    model.cannonPowerUp();
+                    model.registerCommand(new CannonPowerUpCommand(model));
                     break;
                 case MvcGameKeys.POWER_DOWN_KEY:
-                    model.cannonPowerDown();
+                    model.registerCommand(new CannonPowerDownCommand(model));
                     break;
                 case MvcGameKeys.TOGGLE_MOVING_STRATEGY_KEY:
                     model.toggleMovingStrategy();
                     break;
                 case MvcGameKeys.TOGGLE_SHOOTING_MODE_KEY:
-                    model.toggleShootingMode();
+                    model.registerCommand(new ToggleShootingModeCommand(model));
                     break;
                 case MvcGameKeys.SPAWN_ENEMY_KEY:
                     model.spawnNewEnemy();
