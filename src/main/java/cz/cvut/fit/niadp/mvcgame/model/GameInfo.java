@@ -41,6 +41,10 @@ public class GameInfo
         return cannon.getShootingModeName();
     }
 
+    public void setMovingStrategy(IMovingStrategy movingStrategy) {
+        this.strategy = movingStrategy;
+    }
+
     
 
 }

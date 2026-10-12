@@ -193,6 +193,7 @@ public class GameModel implements IGameModel{
 
         }*/
         movingStrategy = movingStrategy.getNextStrategy(this);
+        gameInfo.setMovingStrategy(movingStrategy);
 
     }
 
