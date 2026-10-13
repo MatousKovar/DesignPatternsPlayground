@@ -163,6 +163,10 @@ public class GameModel implements IGameModel{
         return gameObjects;
     }
 
+    public GameInfo getGameInfo(){
+        return gameInfo;
+    }
+
     public IMovingStrategy getMovingStrategy(){
         return movingStrategy;
     }
@@ -194,6 +198,7 @@ public class GameModel implements IGameModel{
         }*/
         movingStrategy = movingStrategy.getNextStrategy(this);
         gameInfo.setMovingStrategy(movingStrategy);
+        notifyObservers();
 
     }
 

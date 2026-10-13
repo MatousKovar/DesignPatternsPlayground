@@ -2,8 +2,10 @@ package cz.cvut.fit.niadp.mvcgame.model;
 
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
 import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
+import cz.cvut.fit.niadp.mvcgame.visitor.IVisitable;
+import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 
-public class GameInfo
+public class GameInfo implements IVisitable
 {
     private int score;
     private AbstractCannon cannon;
@@ -13,6 +15,7 @@ public class GameInfo
     {
         score = 0;
         this.cannon = cannon;
+        this.strategy = strategy;
     }
 
     public void increaseScore(int value)
@@ -43,6 +46,11 @@ public class GameInfo
 
     public void setMovingStrategy(IMovingStrategy movingStrategy) {
         this.strategy = movingStrategy;
+    }
+
+    @Override
+    public void accept(IVisitor visitor) {
+        visitor.visit(this);
     }
 
     

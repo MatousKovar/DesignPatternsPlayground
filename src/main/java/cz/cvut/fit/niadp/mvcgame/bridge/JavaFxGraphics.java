@@ -4,6 +4,8 @@ import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class JavaFxGraphics  implements IGameGraphicsImplementor {
     
@@ -21,6 +23,19 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     @Override
     public void drawText(String text, Position position) {
         graphicsContext.fillText(text, position.getX(), position.getY());
+    }
+
+    @Override
+    public void drawRectangle(Position leftTop, Position rightBottom) {
+        Paint previousStroke = graphicsContext.getStroke();
+        graphicsContext.setStroke(Color.GRAY);
+        graphicsContext.strokeRect(
+            leftTop.getX(),
+            leftTop.getY(),
+            rightBottom.getX() - leftTop.getX(),
+            rightBottom.getY() - leftTop.getY()
+        );
+        graphicsContext.setStroke(previousStroke);
     }
 
     @Override

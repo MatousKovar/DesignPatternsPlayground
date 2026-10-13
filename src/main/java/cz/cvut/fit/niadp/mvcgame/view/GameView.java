@@ -30,6 +30,7 @@ public class GameView implements IObserver{
             gameGraphics.clear();
             gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0,0));
             model.getGameObjects().forEach(gameObject -> gameObject.accept(gameDrawer));
+            model.getGameInfo().accept(gameDrawer);
         }
     }
 

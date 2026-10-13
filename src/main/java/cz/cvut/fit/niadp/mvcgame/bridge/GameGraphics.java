@@ -22,12 +22,7 @@ public class GameGraphics implements IGameGraphics {
 
     @Override
     public void drawRectangle(Position leftTop, Position rightBottom) {
-        Position rightTop = new Position(rightBottom.getX(), leftTop.getY());
-        Position leftBottom = new Position(leftTop.getX(), rightBottom.getY());
-        implementor.drawLine(leftTop, rightTop);
-        implementor.drawLine(rightTop, rightBottom);
-        implementor.drawLine(rightBottom, leftBottom);
-        implementor.drawLine(leftBottom, leftTop);
+        implementor.drawRectangle(leftTop, rightBottom);
     }
 
     @Override

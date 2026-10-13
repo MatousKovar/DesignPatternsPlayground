@@ -28,6 +28,10 @@
 - cela kolize bude osetrena v modelu v update()
 - kolize by mohla vytvorit lifetimeLimited object - exploze
 
+## GameInfo 
+- implementovano jako samostatny objekt uvnitr GameModel ktery trackuje cannon object score a moving strategy - model musi updatovat moving strategy a score kdyz se meni
+- Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
+
 ## Nápady po dokončení povinné části
 - [ ] Přidat menu s volbami Play a Level editor.
 - [ ] Play spustí náhodně vygenerovaný level.

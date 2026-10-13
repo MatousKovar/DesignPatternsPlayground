@@ -4,6 +4,7 @@ import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.model.GameModel;
+import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
@@ -89,6 +90,11 @@ public class GameModelProxy implements IGameModel{
     @Override
     public Set<GameObject> getGameObjects() {
         return subject.getGameObjects();
+    }
+
+    @Override
+    public GameInfo getGameInfo() {
+        return subject.getGameInfo();
     }
 
     @Override

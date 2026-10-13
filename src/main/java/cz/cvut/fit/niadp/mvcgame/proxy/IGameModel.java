@@ -3,6 +3,7 @@ package cz.cvut.fit.niadp.mvcgame.proxy;
 import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
+import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
@@ -24,6 +25,7 @@ public interface IGameModel extends IObservable {
     public void cannonPowerDown();
     public Set<AbstractMissile> getMissiles();
     public Set<GameObject> getGameObjects();
+    public GameInfo getGameInfo();
     public IMovingStrategy getMovingStrategy();
     public void toggleMovingStrategy();
     public IMovingStrategy getNextMovingStrategy(SimpleMovingStrategy strategy);

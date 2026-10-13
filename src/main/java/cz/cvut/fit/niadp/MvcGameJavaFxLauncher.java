@@ -33,6 +33,7 @@ public class MvcGameJavaFxLauncher extends Application {
         Group root = new Group();
         Scene theScene = new Scene( root );
         stage.setScene( theScene );
+        stage.setResizable(false);
         Canvas canvas = new Canvas( winWidth, winHeigth );
         root.getChildren().add( canvas );
         GraphicsContext gc = canvas.getGraphicsContext2D();
