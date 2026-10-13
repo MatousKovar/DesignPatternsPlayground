@@ -1,5 +1,8 @@
 package cz.cvut.fit.niadp.mvcgame.bridge;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import javafx.scene.canvas.GraphicsContext;
@@ -10,6 +13,7 @@ import javafx.scene.paint.Paint;
 public class JavaFxGraphics  implements IGameGraphicsImplementor {
     
     private final GraphicsContext graphicsContext;
+    private final Map<String, Image> imageCache = new HashMap<>();
 
     public JavaFxGraphics(GraphicsContext graphicsContext) {
         this.graphicsContext = graphicsContext;
@@ -17,7 +21,25 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
 
     @Override
     public void drawImage(String path, Position position) {
-        graphicsContext.drawImage(new Image(path), position.getX(), position.getY());
+        graphicsContext.drawImage(getImage(path), position.getX(), position.getY());
+    }
+
+    @Override
+    public void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight) {
+        graphicsContext.drawImage(getImage(path),
+            sourceX,
+            sourceY,
+            sourceWidth,
+            sourceHeight,
+            destination.getX(),
+            destination.getY(),
+            sourceWidth,
+            sourceHeight
+        );
+    }
+
+    private Image getImage(String path) {
+        return imageCache.computeIfAbsent(path, Image::new);
     }
 
     @Override

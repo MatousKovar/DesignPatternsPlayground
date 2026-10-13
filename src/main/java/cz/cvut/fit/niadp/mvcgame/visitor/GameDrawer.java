@@ -7,6 +7,7 @@ import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractImpactObject;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
 
@@ -16,6 +17,11 @@ public class GameDrawer implements IVisitor{
     private static final int GAME_INFO_MARGIN = 20;
     private static final int GAME_INFO_TEXT_PADDING = 12;
     private static final int GAME_INFO_LINE_HEIGHT = 22;
+    private static final int IMPACT_SHEET_COLUMNS = 5;
+    private static final int IMPACT_SHEET_ROWS = 3;
+    private static final int IMPACT_FRAME_COUNT = IMPACT_SHEET_COLUMNS * IMPACT_SHEET_ROWS;
+    private static final int IMPACT_FRAME_WIDTH = 192;
+    private static final int IMPACT_FRAME_HEIGHT = 192;
 
     protected IGameGraphics gameGraphics;
 
@@ -74,6 +80,29 @@ public class GameDrawer implements IVisitor{
         gameGraphics.drawText(
             "Shooting mode: " + info.getShootingMode(),
             new Position(textX, textY + 4 * GAME_INFO_LINE_HEIGHT)
+        );
+    }
+
+    @Override
+    public void visit(AbstractImpactObject impact){
+        if (gameGraphics == null) {
+            return;
+        }
+
+        double progress = (double) impact.getAge() / impact.getLifetimeDurationMillis();
+        progress = Math.max(0.0, Math.min(progress, 1.0));
+
+        int frameIndex = Math.min( IMPACT_FRAME_COUNT - 1, (int) (progress * IMPACT_FRAME_COUNT));
+        int column = frameIndex % IMPACT_SHEET_COLUMNS;
+        int row = frameIndex / IMPACT_SHEET_COLUMNS;
+
+        gameGraphics.drawImageRegion(
+            MvcGameResources.IMPACT_IMAGE,
+            impact.getPosition(),
+            column * IMPACT_FRAME_WIDTH,
+            row * IMPACT_FRAME_HEIGHT,
+            IMPACT_FRAME_WIDTH,
+            IMPACT_FRAME_HEIGHT
         );
     }
 

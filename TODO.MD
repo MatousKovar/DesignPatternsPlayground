@@ -3,7 +3,7 @@
 - [x] Pozadi    
 - [x] Přidat nepřátele
 - [x] Přidat kolize (po zásahu nepřátele raketou)
-- [ ] Přidat GameInfo (text zobrazující skóre a další informace jako například úhel kanónu, sílu kanónu, mód kanónu atd.)
+- [x] Přidat GameInfo (text zobrazující skóre a další informace jako například úhel kanónu, sílu kanónu, mód kanónu atd.)
 - [x] Vytvořit zbylé Commandy pro ovládání Modelu
 - [ ] Vylepšit ukládání věcí do Mementa (pro krok zpět)
 - [ ] Přidat visit metody pro nepřátele, kolize a herní info
@@ -32,10 +32,20 @@
 - implementovano jako samostatny objekt uvnitr GameModel ktery trackuje cannon object score a moving strategy - model musi updatovat moving strategy a score kdyz se meni
 - Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
 
+## AbstractImpactObject
+- vykresluje impact objekty animovane pomoci toho jak dlouho je impact nazivu
+
 ## Nápady po dokončení povinné části
 - [ ] Přidat menu s volbami Play a Level editor.
 - [ ] Play spustí náhodně vygenerovaný level.
 
 
-## Nepovinna cast
+
+
+
+
+--- 
+
+
+# Nepovinna cast
 - [ ] Level editor umožní vytvořit vlastní level a potom si ho zahrát.

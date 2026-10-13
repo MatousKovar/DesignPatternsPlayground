@@ -4,17 +4,15 @@ import java.util.concurrent.ThreadLocalRandom;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.EnemySkinType;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
 import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
-import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 
 public class EnemyA extends AbstractEnemy {
     private static final int SCORE_FOR_KILL = 10;
-    private IGameObjectsFactory gameFactory; // Todo - enemy kdyz umre tak bude na svem miste vytvaret nejaky time limited object
 
-    public EnemyA (Position position, IGameObjectsFactory gameFactory){
+
+    public EnemyA (Position position){
         this.position = position;
-        this.gameFactory = gameFactory;
         
         //random skin on creatiPon - to by melo resit mozna neco jineho nez enemy ten sking???
         EnemySkinType[] types = EnemySkinType.values();

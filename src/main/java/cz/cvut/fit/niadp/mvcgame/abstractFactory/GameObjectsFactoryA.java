@@ -2,9 +2,11 @@ package cz.cvut.fit.niadp.mvcgame.abstractFactory;
 
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractImpactObject;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.CannonA;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.EnemyA;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.ImpactA;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.MissileA;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 
@@ -34,7 +36,12 @@ public class GameObjectsFactoryA implements IGameObjectsFactory{
 
     @Override
     public EnemyA createEnemy(Position position){
-        return new EnemyA(position,this);
+        return new EnemyA(position);
+    }
+
+    @Override
+    public AbstractImpactObject createImpact(Position position) {
+        return new ImpactA(new Position(position.getX(), position.getY()));
     }
 
 

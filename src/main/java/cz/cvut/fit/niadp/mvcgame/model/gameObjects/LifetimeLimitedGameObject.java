@@ -6,7 +6,7 @@ import cz.cvut.fit.niadp.mvcgame.model.Position;
 
 public abstract class LifetimeLimitedGameObject extends GameObject {
 
-    private final LocalDateTime bornAt;
+    protected final LocalDateTime bornAt;
     
     protected LifetimeLimitedGameObject(Position initPosition) {
         position = initPosition;

@@ -30,4 +30,9 @@ public class GameGraphics implements IGameGraphics {
         implementor.clear();
     }
 
+    @Override
+    public void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight) {
+        implementor.drawImageRegion(path, destination, sourceX, sourceY, sourceWidth, sourceHeight);
+    }
+
 }

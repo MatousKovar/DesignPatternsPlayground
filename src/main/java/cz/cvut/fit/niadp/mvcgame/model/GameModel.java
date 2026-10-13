@@ -13,6 +13,7 @@ import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractImpactObject;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
 import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
@@ -28,6 +29,7 @@ public class GameModel implements IGameModel{
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
     private final Set<AbstractEnemy> enemies;
+    private final Set<AbstractImpactObject> impactAnimations;
     private IGameObjectsFactory factory;
     protected IMovingStrategy movingStrategy;
     protected final Queue<AbstractGameCommand> unexecutedCommands;
@@ -42,6 +44,7 @@ public class GameModel implements IGameModel{
         cannon = factory.createCannon();
         missiles = new HashSet<AbstractMissile>();
         enemies = new HashSet<AbstractEnemy>();
+        impactAnimations = new HashSet<>();
         movingStrategy = new RealMovingStrategy();
         gameInfo = new GameInfo(cannon,movingStrategy);
         unexecutedCommands = new LinkedBlockingQueue<>();
@@ -52,24 +55,40 @@ public class GameModel implements IGameModel{
         moveMissiles();
         executeCommands();
         checkCollissions();
+        removeExpiredImpactAnimations();
     }
 
     private void checkCollissions()
     {
         Set<AbstractEnemy> enemiesToRemove = new HashSet<>();
+        Set<AbstractMissile> missilesToRemove = new HashSet<>();
+        boolean collisionOccurred = false;
 
-        for (AbstractEnemy enemy : enemies) {
-            for (AbstractMissile missile : missiles) {
+        for (AbstractMissile missile : missiles) {
+            for (AbstractEnemy enemy : enemies) {
                 if (enemy.getHitbox().overlaps(missile.getHitbox())) {
-                    enemiesToRemove.add(enemy);
-                    gameInfo.increaseScore(enemy.getScoreForKill());
+                    missilesToRemove.add(missile);
+                    collisionOccurred = true;
+
+                    if (enemiesToRemove.add(enemy)) {
+                        gameInfo.increaseScore(enemy.getScoreForKill());
+                        impactAnimations.add(factory.createImpact(enemy.getPosition()));
+                    }
                     break;
                 }
             }
         }
 
         boolean removedEnemies = enemies.removeAll(enemiesToRemove);
-        if (removedEnemies) {
+        boolean removedMissiles = missiles.removeAll(missilesToRemove);
+        if (collisionOccurred || removedEnemies || removedMissiles) {
+            notifyObservers();
+        }
+    }
+
+    private void removeExpiredImpactAnimations() {
+        boolean removedImpacts = impactAnimations.removeIf(AbstractImpactObject::isExpired);
+        if (removedImpacts) {
             notifyObservers();
         }
     }
@@ -159,6 +178,7 @@ public class GameModel implements IGameModel{
         var gameObjects = new HashSet<GameObject>();
         gameObjects.addAll(missiles);
         gameObjects.addAll(enemies);
+        gameObjects.addAll(impactAnimations);
         gameObjects.add(cannon);
         return gameObjects;
     }
