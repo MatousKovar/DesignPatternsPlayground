@@ -6,7 +6,7 @@
 - [x] Přidat GameInfo (text zobrazující skóre a další informace jako například úhel kanónu, sílu kanónu, mód kanónu atd.)
 - [x] Vytvořit zbylé Commandy pro ovládání Modelu
 - [ ] Vylepšit ukládání věcí do Mementa (pro krok zpět)
-- [ ] Přidat visit metody pro nepřátele, kolize a herní info
+- [x] Přidat visit metody pro nepřátele, kolize a herní info
 - [ ] Vytvořit 3 testy (tak aby bylo celkem 5 testů a alespoň v dvou testech bylo použito Mockování)
 - [ ] Přidat 3 další návrhové vzory
 - [ ] Přidat 5 zajímavých funkcionalit hry
@@ -31,6 +31,12 @@
 ## GameInfo 
 - implementovano jako samostatny objekt uvnitr GameModel ktery trackuje cannon object score a moving strategy - model musi updatovat moving strategy a score kdyz se meni
 - Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
+
+## 5 zajimavych funkcionalit
+### menu
+- vytvoi se nejakej stav TODO
+- animovana animace kolize - DONE
+- nahodne skiny enemy - DONE
 
 ## AbstractImpactObject
 - vykresluje impact objekty animovane pomoci toho jak dlouho je impact nazivu

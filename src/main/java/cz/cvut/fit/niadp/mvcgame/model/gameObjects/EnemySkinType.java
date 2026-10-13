@@ -5,7 +5,10 @@ import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 public enum EnemySkinType implements IGameObjectSkinType{
 
     FIRST(MvcGameResources.ENEMY1_IMAGE,30,29),
-    SECOND(MvcGameResources.ENEMY2_IMAGE,30,26);
+    SECOND(MvcGameResources.ENEMY2_IMAGE,30,26),
+    THIRD(MvcGameResources.ENEMY_KING_IMAGE,90,100);
+
+
 
 
     private final String imagePath;
