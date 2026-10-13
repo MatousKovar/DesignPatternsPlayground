@@ -7,7 +7,7 @@
 - [x] Vytvořit zbylé Commandy pro ovládání Modelu
 - [x] Vylepšit ukládání věcí do Mementa (pro krok zpět)
 - [x] Přidat visit metody pro nepřátele, kolize a herní info
-- [ ] Vytvořit 3 testy (tak aby bylo celkem 5 testů a alespoň v dvou testech bylo použito Mockování)
+- [x] Vytvořit 3 testy (tak aby bylo celkem 5 testů a alespoň v dvou testech bylo použito Mockování)
 - [ ] Přidat 3 další návrhové vzory
 - [ ] Přidat 5 zajímavých funkcionalit hry
 
@@ -35,6 +35,10 @@
 ## 5 zajimavych funkcionalit
 ### STAV - menu
 - vytvoi se nejakej stav TODO
+### Nahodny generator levelu
+- TODO
+### ukladani levelu do souboru
+
 ### VIZUALNI - Animovane kolize a nahodne stridani vzhledu prasatek
 - animovana animace kolize - DONE
 - nahodne skiny enemy - DONE
