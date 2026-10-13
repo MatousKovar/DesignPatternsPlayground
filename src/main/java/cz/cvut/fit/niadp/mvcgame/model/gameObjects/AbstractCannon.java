@@ -31,6 +31,10 @@ public  abstract class AbstractCannon extends GameObject {
         return shootingMode.getName();
     }
 
+    public abstract Object createMemento();
+    
+    public abstract void restoreMemento(Object memento);
+
     public void accept(IVisitor visitor){
         visitor.visit(this);
     }

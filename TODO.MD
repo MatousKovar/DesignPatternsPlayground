@@ -5,7 +5,7 @@
 - [x] Přidat kolize (po zásahu nepřátele raketou)
 - [x] Přidat GameInfo (text zobrazující skóre a další informace jako například úhel kanónu, sílu kanónu, mód kanónu atd.)
 - [x] Vytvořit zbylé Commandy pro ovládání Modelu
-- [ ] Vylepšit ukládání věcí do Mementa (pro krok zpět)
+- [x] Vylepšit ukládání věcí do Mementa (pro krok zpět)
 - [x] Přidat visit metody pro nepřátele, kolize a herní info
 - [ ] Vytvořit 3 testy (tak aby bylo celkem 5 testů a alespoň v dvou testech bylo použito Mockování)
 - [ ] Přidat 3 další návrhové vzory
@@ -33,10 +33,16 @@
 - Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
 
 ## 5 zajimavych funkcionalit
-### menu
+### STAV - menu
 - vytvoi se nejakej stav TODO
+### VIZUALNI - Animovane kolize a nahodne stridani vzhledu prasatek
 - animovana animace kolize - DONE
 - nahodne skiny enemy - DONE
+### nahled strely kanonu
+- jako v angry birds - TODO 
+### pohybujici se nepratele
+- 
+
 
 ## AbstractImpactObject
 - vykresluje impact objekty animovane pomoci toho jak dlouho je impact nazivu

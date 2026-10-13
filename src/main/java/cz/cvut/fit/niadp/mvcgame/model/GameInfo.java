@@ -7,6 +7,14 @@ import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 
 public class GameInfo implements IVisitable
 {
+    private static class Memento {
+        private final int score;
+
+        private Memento(int score) {
+            this.score = score;
+        }
+    }
+
     private int score;
     private AbstractCannon cannon;
     private IMovingStrategy strategy;
@@ -25,6 +33,14 @@ public class GameInfo implements IVisitable
 
     public int getScore(){
         return score;
+    }
+
+    public Object createMemento() {
+        return new Memento(score);
+    }
+
+    public void restoreMemento(Object memento) {
+        this.score = ((Memento) memento).score;
     }
 
     public double getCannonAngle(){

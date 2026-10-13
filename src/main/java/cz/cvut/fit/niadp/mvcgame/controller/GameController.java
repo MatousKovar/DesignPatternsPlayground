@@ -10,6 +10,8 @@ import cz.cvut.fit.niadp.mvcgame.command.CannonShootCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonDownCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonUpCommand;
 import cz.cvut.fit.niadp.mvcgame.command.ToggleShootingModeCommand;
+import cz.cvut.fit.niadp.mvcgame.command.ToggleMovingStrategyCommand;
+import cz.cvut.fit.niadp.mvcgame.command.SpawnEnemyCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameKeys;
 import cz.cvut.fit.niadp.mvcgame.memento.CareTaker;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
@@ -49,13 +51,13 @@ public class GameController {
                     model.registerCommand(new CannonPowerDownCommand(model));
                     break;
                 case MvcGameKeys.TOGGLE_MOVING_STRATEGY_KEY:
-                    model.toggleMovingStrategy();
+                    model.registerCommand(new ToggleMovingStrategyCommand(model));
                     break;
                 case MvcGameKeys.TOGGLE_SHOOTING_MODE_KEY:
                     model.registerCommand(new ToggleShootingModeCommand(model));
                     break;
                 case MvcGameKeys.SPAWN_ENEMY_KEY:
-                    model.spawnNewEnemy();
+                    model.registerCommand(new SpawnEnemyCommand(model));
                     break;
                 case MvcGameKeys.STORE_GAME_SNAPSHOT_KEY:
                     CareTaker.getInstance().createMemento();

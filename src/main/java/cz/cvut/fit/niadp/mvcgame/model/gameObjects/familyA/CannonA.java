@@ -10,6 +10,7 @@ import cz.cvut.fit.niadp.mvcgame.model.Vector;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.state.DoubleShootingMode;
+import cz.cvut.fit.niadp.mvcgame.state.IShootingMode;
 import cz.cvut.fit.niadp.mvcgame.state.SingleShootingMode;
 
 public class CannonA extends AbstractCannon {
@@ -18,6 +19,22 @@ public class CannonA extends AbstractCannon {
     protected int power;
     protected final List<AbstractMissile> shootingBatch;
 
+    private static class Memento {
+        private final int positionX;
+        private final int positionY;
+        private final double angle;
+        private final int power;
+        private final IShootingMode shootingMode;
+
+        private Memento(int positionX, int positionY, double angle, int power, IShootingMode shootingMode) {
+            this.positionX = positionX;
+            this.positionY = positionY;
+            this.angle = angle;
+            this.power = power;
+            this.shootingMode = shootingMode;
+        }
+    }
+
     public CannonA(Position position, IGameObjectsFactory gameObjectsFactory){
         this.position = position;
         this.gameObjectsFactory = gameObjectsFactory;
@@ -25,6 +42,21 @@ public class CannonA extends AbstractCannon {
         power = MvcGameConfig.INIT_POWER;
         this.shootingMode = new SingleShootingMode();
         shootingBatch = new ArrayList<AbstractMissile>();
+    }
+
+    @Override
+    public Object createMemento() {
+        return new Memento(position.getX(), position.getY(), angle, power, shootingMode);
+    }
+
+    @Override
+    public void restoreMemento(Object memento) {
+        Memento snapshot = (Memento) memento;
+        position.setX(snapshot.positionX);
+        position.setY(snapshot.positionY);
+        angle = snapshot.angle;
+        power = snapshot.power;
+        shootingMode = snapshot.shootingMode;
     }
 
     public void moveUp(){
@@ -87,7 +119,4 @@ public class CannonA extends AbstractCannon {
     public int getCannonPower() {
         return this.power;
     }
-
-    
-    
 }

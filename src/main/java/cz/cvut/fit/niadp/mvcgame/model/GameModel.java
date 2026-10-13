@@ -243,33 +243,35 @@ public class GameModel implements IGameModel{
     }
 
     private static class Memento{
-        private int cannonPositionX;
-        private int cannonPositionY;
+        private Object cannonMemento;
         private Set<AbstractMissile> missiles;
-        private Set<IObserver> observers;
         private Set<AbstractEnemy> enemies;
-        
-        // fronta prikazu a takovy ty veci mozna jeste?
+        private Object gameInfoMemento;
+        private IMovingStrategy movingStrategy;
     }
 
     public Object createMemento(){
         Memento gameModelSnapshot = new Memento();
-        gameModelSnapshot.cannonPositionX = cannon.getPosition().getX();
-        gameModelSnapshot.cannonPositionY = cannon.getPosition().getY();
-        gameModelSnapshot.missiles = this.missiles;
-        gameModelSnapshot.observers = this.observers;
-        gameModelSnapshot.enemies = this.enemies; 
+        gameModelSnapshot.cannonMemento = cannon.createMemento();
+        gameModelSnapshot.missiles = new HashSet<>(this.missiles);
+        gameModelSnapshot.enemies = new HashSet<>(this.enemies);
+        gameModelSnapshot.movingStrategy = this.movingStrategy;
+        gameModelSnapshot.gameInfoMemento = gameInfo.createMemento();
         
         return gameModelSnapshot;
     }
 
     public void setMemento(Object memento){
         Memento gameModelSnapshot = (Memento)memento;
-        cannon.getPosition().setX(gameModelSnapshot.cannonPositionX);
-        cannon.getPosition().setY(gameModelSnapshot.cannonPositionY);
+        cannon.restoreMemento(gameModelSnapshot.cannonMemento);
+        this.missiles.clear();
         this.missiles.addAll(gameModelSnapshot.missiles);
-        this.observers.addAll(gameModelSnapshot.observers);
+        this.enemies.clear();
         this.enemies.addAll(gameModelSnapshot.enemies);
+        this.impactAnimations.clear();
+        gameInfo.restoreMemento(gameModelSnapshot.gameInfoMemento);
+        movingStrategy = gameModelSnapshot.movingStrategy;
+        gameInfo.setMovingStrategy(movingStrategy);
     }
 
     @Override
