@@ -12,8 +12,20 @@ public interface IGameGraphics {
         int sourceX,
         int sourceY,
         int sourceWidth,
+        int sourceHeight,
+        int destinationWidth,
+        int destinationHeight
+    );
+    
+    void drawImageRegion(
+        String path,
+        Position destination,
+        int sourceX,
+        int sourceY,
+        int sourceWidth,
         int sourceHeight
     );
+    
 
     void clear();
 }

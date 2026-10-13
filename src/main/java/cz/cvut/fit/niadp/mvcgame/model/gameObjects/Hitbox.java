@@ -21,6 +21,14 @@ public class Hitbox {
         return position.getY();
     }
 
+    public int getWidth(){
+        return width;
+    }
+
+    public int getHeight(){
+        return height;
+    }
+
     public boolean overlaps(Hitbox other){
         return getX() < other.getX() + other.width
             && getX() + width > other.getX()

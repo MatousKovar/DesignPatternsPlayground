@@ -96,13 +96,16 @@ public class GameDrawer implements IVisitor{
         int column = frameIndex % IMPACT_SHEET_COLUMNS;
         int row = frameIndex / IMPACT_SHEET_COLUMNS;
 
+        //draws animation part based on lifetime of object
         gameGraphics.drawImageRegion(
             MvcGameResources.IMPACT_IMAGE,
             impact.getPosition(),
             column * IMPACT_FRAME_WIDTH,
             row * IMPACT_FRAME_HEIGHT,
             IMPACT_FRAME_WIDTH,
-            IMPACT_FRAME_HEIGHT
+            IMPACT_FRAME_HEIGHT,
+            impact.getWidth(),
+            impact.getHeight()
         );
     }
 

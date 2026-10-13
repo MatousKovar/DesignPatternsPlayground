@@ -7,8 +7,9 @@ import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 public class ImpactA extends AbstractImpactObject{
     private static final long LIFETIME_DURATION_MILLIS = 1_500;
 
-    public ImpactA(Position initPosition) {
-        super(initPosition);
+    public ImpactA(Position initPosition, int width, int height ) {
+        super(initPosition,width,height);
+        
     }
 
     @Override

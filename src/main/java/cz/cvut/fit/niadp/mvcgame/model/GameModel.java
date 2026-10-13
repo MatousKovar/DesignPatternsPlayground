@@ -72,7 +72,9 @@ public class GameModel implements IGameModel{
 
                     if (enemiesToRemove.add(enemy)) {
                         gameInfo.increaseScore(enemy.getScoreForKill());
-                        impactAnimations.add(factory.createImpact(enemy.getPosition()));
+                        impactAnimations.add(factory.createImpact(enemy.getPosition(),
+                                                                  enemy.getHitbox().getWidth(),
+                                                                  enemy.getHitbox().getHeight()));
                     }
                     break;
                 }

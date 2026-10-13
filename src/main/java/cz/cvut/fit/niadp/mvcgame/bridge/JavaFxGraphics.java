@@ -26,6 +26,16 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
 
     @Override
     public void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight) {
+        drawImageRegion(
+            path, destination, sourceX, sourceY, sourceWidth, sourceHeight,
+            sourceWidth, sourceHeight
+        );
+    }
+
+
+    @Override
+    public void drawImageRegion(String path, Position destination, int sourceX, int sourceY, int sourceWidth,
+            int sourceHeight, int destinationWidth, int destinationHeight) {
         graphicsContext.drawImage(getImage(path),
             sourceX,
             sourceY,
@@ -33,10 +43,11 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
             sourceHeight,
             destination.getX(),
             destination.getY(),
-            sourceWidth,
-            sourceHeight
+            destinationWidth,
+            destinationHeight
         );
     }
+
 
     private Image getImage(String path) {
         return imageCache.computeIfAbsent(path, Image::new);

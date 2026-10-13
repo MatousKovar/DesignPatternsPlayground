@@ -40,8 +40,8 @@ public class GameObjectsFactoryA implements IGameObjectsFactory{
     }
 
     @Override
-    public AbstractImpactObject createImpact(Position position) {
-        return new ImpactA(new Position(position.getX(), position.getY()));
+    public AbstractImpactObject createImpact(Position position, int width, int height) {
+        return new ImpactA(new Position(position.getX(), position.getY()),width,height);
     }
 
 
