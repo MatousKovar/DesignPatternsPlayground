@@ -25,6 +25,20 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     }
 
     @Override
+    public void drawImageAtHeight(String path, Position position, int destinationHeight) {
+        Image image = getImage(path);
+        double aspectRatio = image.getWidth() / image.getHeight();
+        double destinationWidth = destinationHeight * aspectRatio;
+        graphicsContext.drawImage(
+            image,
+            position.getX(),
+            position.getY(),
+            destinationWidth,
+            destinationHeight
+        );
+    }
+
+    @Override
     public void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight) {
         drawImageRegion(
             path, destination, sourceX, sourceY, sourceWidth, sourceHeight,
@@ -79,6 +93,12 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     @Override
     public void clear() {
         graphicsContext.clearRect(MvcGameConfig.MIN_X, MvcGameConfig.MIN_Y, MvcGameConfig.MAX_X, MvcGameConfig.MAX_Y);
+    }
+
+    @Override
+    public ImageSize getImageSize(String path) {
+        Image image = getImage(path);
+        return new ImageSize(image.getWidth(), image.getHeight());
     }
 
 }

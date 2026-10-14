@@ -16,6 +16,16 @@ public class GameGraphics implements IGameGraphics {
     }
 
     @Override
+    public void drawImageAtHeight(String path, Position position, int destinationHeight) {
+        implementor.drawImageAtHeight(path, position, destinationHeight);
+    }
+
+    @Override
+    public ImageSize getImageSize(String path) {
+        return implementor.getImageSize(path);
+    }
+
+    @Override
     public void drawText(String text, Position position) {
         implementor.drawText(text, position);
     }

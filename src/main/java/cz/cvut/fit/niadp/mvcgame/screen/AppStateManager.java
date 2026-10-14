@@ -21,13 +21,26 @@ public class AppStateManager{
 
     public void processPressedKeys(List<String> keys){
         this.currentState.processPressedKeys(keys);
+        this.render();
     }
 
     public void processMouseClick(double x, double y){
         this.currentState.processMouseClick(x, y,this);
+        this.render();
     }
 
     public void setGameState(){
         this.currentState = gameState;
+        this.render();
+    }
+
+    public void setMenuState(){
+        this.currentState = menuState;
+        this.render();
+    }
+
+    public void setPauseState(){
+        this.currentState = pauseState;
+        this.render();
     }
 }

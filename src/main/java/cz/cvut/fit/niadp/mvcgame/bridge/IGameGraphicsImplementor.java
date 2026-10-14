@@ -2,8 +2,11 @@ package cz.cvut.fit.niadp.mvcgame.bridge;
 
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 
+
 public interface IGameGraphicsImplementor {
     void drawImage(String path, Position position);
+    void drawImageAtHeight(String path, Position position, int destinationHeight);
+    ImageSize getImageSize(String path);
     void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight);
     void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight, int destinationWidth, int destinationHeight);
     void drawText(String text, Position position);
