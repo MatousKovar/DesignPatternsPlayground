@@ -19,41 +19,53 @@
 - enemy dostava random skin pri vytvoreni
 - enemy je mozne tvorit pomoci factory - controller bere SPAWN_ENEMY_STRIN
 
-## Flyweight
-- mame objekt enemy a missle, tyto objekty mohou mit type - hlavne co se tyce skinu - to je cesta ke skinu a velikost hitboxu
-- takze MissileType a EnemyType je flyweight object
-
 ## Kolize
 - pridanej atribut Hitbox k AbstractEnemy a AbstractMissile - uchovava pozici a sirku a vysku a umi overlaps - takze bude obsahovat logiku kolize
 - cela kolize bude osetrena v modelu v update()
 - kolize by mohla vytvorit lifetimeLimited object - exploze
+- pouziva i AbstractImpactObject
+- vykresluje impact objekty animovane pomoci toho jak dlouho je impact nazivu
+
+## Commandy
+- dodelano kompletni hybani delem a nastavovani sily
+
+## Memento
+- Uklada stav GameInfo a Cannon a pozice enemy
+
+
+## Flyweight
+- mame objekt enemy a missle, tyto objekty mohou mit type - hlavne co se tyce skinu - to je cesta ke skinu a velikost hitboxu
+- takze MissileType a EnemyType je flyweight object
+
 
 ## GameInfo 
 - implementovano jako samostatny objekt uvnitr GameModel ktery trackuje cannon object score a moving strategy - model musi updatovat moving strategy a score kdyz se meni
 - Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
 
-## 5 zajimavych funkcionalit
-### STAV - menu
-- vytvoi se nejakej stav TODO
-### Nahodny generator levelu
-- TODO
-### ukladani levelu do souboru
 
-### VIZUALNI - Animovane kolize a nahodne stridani vzhledu prasatek
-- animovana animace kolize - DONE
-- nahodne skiny enemy - DONE
+## 5 zajimavych funkcionalit
+### menu a pauza - Nova funkce + State design pattern
+- vytvoi se nejakej stav TODO
+- State pattern - Bude nejaky screen 
+
+### Animovana impact animace
+- HOTOVO
+- animace ma nekolik framu, delka trvani animace je v ImpactObjectu, animace je stejne velka jako enemy kterou zabije
+- stavi na stejnem rozhrani jako missile - LifetimeLimitedGameObject
+
 ### nahled strely kanonu
 - jako v angry birds - TODO 
-### pohybujici se nepratele
-- 
+
+### Builder - design pattern + tvorba levelu
+- TODO 
+
+### Decorator - design pattern + zajimava funkcionalita
+- prida strele specialni schopnost
 
 
-## AbstractImpactObject
-- vykresluje impact objekty animovane pomoci toho jak dlouho je impact nazivu
 
-## Nápady po dokončení povinné části
-- [ ] Přidat menu s volbami Play a Level editor.
-- [ ] Play spustí náhodně vygenerovaný level.
+# nepovinna cast
+- udelam pohyb nepratel at to je jako nejake jine starsi hry ja nevim space odyssey nebo jak se to jmenuje
 
 
 

@@ -9,4 +9,11 @@ public class MvcGameResources {
     public static final String ENEMY2_IMAGE = "images/enemy2.png";
     public static final String ENEMY_KING_IMAGE = "images/king_pig.png";
     public static final String IMPACT_IMAGE = "images/impact.png";
+    public static final String MENU_IMAGE = "images/menu.png";
+    public static final String BACK_TO_MENU_IMAGE = "images/back_menu.png";
+    public static final String QUIT_IMAGE = "images/quit.png";
+    public static final String PAUSE_IMAGE = "images/pause.png";
+    public static final String PLAY_IMAGE = "images/play.png";
+
+
 }
