@@ -39,6 +39,7 @@ public class MenuState implements IAppState{
         view.onMousePressed(x, y);
     }
 
+    // Jo tady by bylo lepsi mit nejakou formu GameStateCommand - a ty commandy by executoval AppStateManager ale pro moje dve tlacitka jsem usoudi
     @Override
     public void processMouseRelease(double x, double y, AppStateManager navigator) {
         switch (view.onMouseReleased(x, y)) {
