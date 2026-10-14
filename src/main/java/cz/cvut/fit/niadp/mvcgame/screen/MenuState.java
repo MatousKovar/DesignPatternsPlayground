@@ -2,6 +2,8 @@ package cz.cvut.fit.niadp.mvcgame.screen;
 
 import java.util.List;
 
+import javafx.application.Platform;
+
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.view.MenuView;
 
@@ -25,7 +27,30 @@ public class MenuState implements IAppState{
 
     @Override
     public void processMouseClick(double x, double y, AppStateManager navigator) {
-        navigator.setGameState();
+    }
+
+    @Override
+    public void processMouseMove(double x, double y){
+        this.view.onMouseMoved(x, y);
+    }
+
+    @Override
+    public void processMousePress(double x, double y) {
+        view.onMousePressed(x, y);
+    }
+
+    @Override
+    public void processMouseRelease(double x, double y, AppStateManager navigator) {
+        switch (view.onMouseReleased(x, y)) {
+            case PLAY -> navigator.setGameState();
+            case QUIT -> Platform.exit();
+            case NONE -> {}
+        }
+    }
+
+    @Override
+    public void resetMouseInteraction() {
+        view.resetInteraction();
     }
     
 }

@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -59,9 +60,30 @@ public class MvcGameJavaFxLauncher extends Application {
                     pressedKeysCodes.remove( code );
                 }
         );
-        theScene.setOnMouseClicked(event ->
-            appStateManager.processMouseClick(event.getX(), event.getY())
+        canvas.setOnMouseMoved(event ->
+            appStateManager.processMouseMove(event.getX(), event.getY())
         );
+        canvas.setOnMouseDragged(event ->
+            appStateManager.processMouseMove(event.getX(), event.getY())
+        );
+        canvas.setOnMousePressed(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                appStateManager.processMousePress(event.getX(), event.getY());
+            }
+        });
+        canvas.setOnMouseReleased(event -> {
+            if (event.getButton() == MouseButton.PRIMARY) {
+                appStateManager.processMouseRelease(event.getX(), event.getY());
+            }
+        });
+        canvas.setOnMouseExited(event ->
+            appStateManager.processMouseMove(Double.NaN, Double.NaN)
+        );
+        stage.focusedProperty().addListener((observable, wasFocused, isFocused) -> {
+            if (!isFocused) {
+                appStateManager.resetMouseInteraction();
+            }
+        });
         // the game-loop
         theMvcGame.setGraphicsContext(gameGraphics);
         new AnimationTimer() {

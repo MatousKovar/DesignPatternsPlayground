@@ -29,17 +29,39 @@ public class AppStateManager{
         this.render();
     }
 
+    public void processMouseMove(double x, double y) {
+        currentState.processMouseMove(x, y);
+    }
+
+    public void processMousePress(double x, double y) {
+        currentState.processMousePress(x, y);
+        render();
+    }
+
+    public void processMouseRelease(double x, double y) {
+        currentState.processMouseRelease(x, y, this);
+        render();
+    }
+
+    public void resetMouseInteraction() {
+        currentState.resetMouseInteraction();
+        render();
+    }
+
     public void setGameState(){
+        currentState.resetMouseInteraction();
         this.currentState = gameState;
         this.render();
     }
 
     public void setMenuState(){
+        currentState.resetMouseInteraction();
         this.currentState = menuState;
         this.render();
     }
 
     public void setPauseState(){
+        currentState.resetMouseInteraction();
         this.currentState = pauseState;
         this.render();
     }

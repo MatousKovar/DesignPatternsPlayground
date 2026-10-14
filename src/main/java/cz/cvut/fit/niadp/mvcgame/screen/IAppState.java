@@ -7,6 +7,14 @@ public interface IAppState{
 
     public void processMouseClick(double x, double y, AppStateManager navigator);
 
+    default void processMouseMove(double x, double y) {}
+
+    default void processMousePress(double x, double y) {}
+
+    default void processMouseRelease(double x, double y, AppStateManager navigator) {}
+
+    default void resetMouseInteraction() {}
+
     public void render();
 
 }
