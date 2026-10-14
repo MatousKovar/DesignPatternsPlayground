@@ -14,6 +14,10 @@ import cz.cvut.fit.niadp.mvcgame.MvcGame;
 import cz.cvut.fit.niadp.mvcgame.bridge.GameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.JavaFxGraphics;
+import cz.cvut.fit.niadp.mvcgame.screen.AppStateManager;
+import cz.cvut.fit.niadp.mvcgame.screen.GameState;
+import cz.cvut.fit.niadp.mvcgame.screen.MenuState;
+import cz.cvut.fit.niadp.mvcgame.screen.PauseState;
 
 public class MvcGameJavaFxLauncher extends Application {
 
@@ -38,6 +42,7 @@ public class MvcGameJavaFxLauncher extends Application {
         root.getChildren().add( canvas );
         GraphicsContext gc = canvas.getGraphicsContext2D();
         IGameGraphics gameGraphics = new GameGraphics(new JavaFxGraphics(gc));
+        AppStateManager appStateManager = new AppStateManager(new MenuState(gameGraphics),new GameState(theMvcGame), new PauseState(gameGraphics)); // Init page states
         ArrayList<String> pressedKeysCodes = new ArrayList<>();
         //register event handlers in JavaFX
         theScene.setOnKeyPressed(
@@ -54,13 +59,15 @@ public class MvcGameJavaFxLauncher extends Application {
                     pressedKeysCodes.remove( code );
                 }
         );
+        theScene.setOnMouseClicked(event ->
+            appStateManager.processMouseClick(event.getX(), event.getY())
+        );
         // the game-loop
         theMvcGame.setGraphicsContext(gameGraphics);
         new AnimationTimer() {
             public void handle(long currentNanoTime) {
-                theMvcGame.processPressedKeys(pressedKeysCodes);
-                //theMvcGame.update();
-                //theMvcGame.render(gc);
+                appStateManager.processPressedKeys(pressedKeysCodes);
+                // theMvcGame.processPressedKeys(pressedKeysCodes);
             }
         }.start();
         stage.show();

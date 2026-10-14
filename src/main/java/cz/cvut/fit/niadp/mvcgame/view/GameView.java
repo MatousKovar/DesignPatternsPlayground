@@ -8,7 +8,7 @@ import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.niadp.mvcgame.visitor.GameDrawer;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 
-public class GameView implements IObserver{
+public class GameView implements IObserver, IView{ 
     private final IGameModel model;
     private final GameController controller;
     private IGameGraphics gameGraphics;
