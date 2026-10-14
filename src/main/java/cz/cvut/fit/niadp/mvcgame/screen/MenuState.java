@@ -5,6 +5,9 @@ import java.util.List;
 import javafx.application.Platform;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
+import cz.cvut.fit.niadp.mvcgame.command.QuitButtonCommand;
+import cz.cvut.fit.niadp.mvcgame.command.StartGameButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.view.MenuView;
 
 public class MenuState implements IAppState{
@@ -13,6 +16,10 @@ public class MenuState implements IAppState{
 
     public MenuState(IGameGraphics graphics){
         this.view = new MenuView(graphics);
+    }
+    @Override
+    public void setCommands(AppStateManager appStateManager){
+        view.setCommands(new StartGameButtonCommand(appStateManager), new QuitButtonCommand());
     }
     
     @Override
@@ -31,22 +38,18 @@ public class MenuState implements IAppState{
 
     @Override
     public void processMouseMove(double x, double y){
-        this.view.onMouseMoved(x, y);
+        this.view.processMouseMove(x, y);
     }
 
     @Override
     public void processMousePress(double x, double y) {
-        view.onMousePressed(x, y);
+        view.processMousePress(x, y);
     }
 
     // Jo tady by bylo lepsi mit nejakou formu GameStateCommand - a ty commandy by executoval AppStateManager ale pro moje dve tlacitka jsem usoudi
     @Override
-    public void processMouseRelease(double x, double y, AppStateManager navigator) {
-        switch (view.onMouseReleased(x, y)) {
-            case PLAY -> navigator.setGameState();
-            case QUIT -> Platform.exit();
-            case NONE -> {}
-        }
+    public void processMouseRelease(double x, double y) {
+        this.view.processMouseRelease(x, y);
     }
 
     @Override

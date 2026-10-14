@@ -2,6 +2,7 @@ package cz.cvut.fit.niadp.mvcgame.screen;
 
 import java.util.List;
 
+
 public class AppStateManager{
     private final IAppState menuState;
     private final IAppState gameState;
@@ -13,10 +14,15 @@ public class AppStateManager{
         this.gameState = gameState;
         this.pauseState = pauseState;
         this.menuState = menuState;
+        initCommands();
     }
 
     public void render(){
         this.currentState.render();
+    }
+
+    public void initCommands(){
+        menuState.setCommands(this);
     }
 
     public void processPressedKeys(List<String> keys){
@@ -39,7 +45,7 @@ public class AppStateManager{
     }
 
     public void processMouseRelease(double x, double y) {
-        currentState.processMouseRelease(x, y, this);
+        currentState.processMouseRelease(x, y);
         render();
     }
 

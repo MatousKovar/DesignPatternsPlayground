@@ -4,14 +4,16 @@ import java.util.Objects;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
+import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 
-public class ImageButton implements IView {
+public class ImageButton {
     private static final double HOVER_SCALE = 1.06;
     private static final double PRESSED_SCALE = 0.96;
 
     private final IGameGraphics graphics;
     private final String imagePath;
+    private IButtonCommand command;
     private Position position;
     private ImageSize size;
     private int height;
@@ -23,11 +25,17 @@ public class ImageButton implements IView {
         this.imagePath = Objects.requireNonNull(imagePath, "Image path must not be null");
         setPosition(position);
         setHeight(height);
+        this.command = null;
     }
 
-    @Override
     public void render() {
-        double scale = pressed && hovered ? PRESSED_SCALE : hovered ? HOVER_SCALE : 1.0;
+        double scale = 1.0;
+        if (pressed && hovered) {
+            scale = PRESSED_SCALE;
+        } else if (hovered) {
+            scale = HOVER_SCALE;
+        }
+
         int renderedHeight = Math.max(1, (int) Math.round(height * scale));
         ImageSize renderedSize = graphics.getImageSize(imagePath, renderedHeight);
         Position renderedPosition = new Position(
@@ -42,19 +50,24 @@ public class ImageButton implements IView {
             && y >= position.getY() && y < position.getY() + size.height();
     }
 
-    public void onMouseMoved(double x, double y) {
+    public void processMouseMove(double x, double y) {
         hovered = contains(x, y);
     }
 
-    public void onMousePressed(double x, double y) {
-        onMouseMoved(x, y);
+    public void processMousePress(double x, double y) {
+        processMouseMove(x, y);
         pressed = hovered;
     }
 
-    public boolean onMouseReleased(double x, double y) {
-        onMouseMoved(x, y);
+    public boolean processMouseRelease(double x, double y) {
+        processMouseMove(x, y);
         boolean clicked = pressed && hovered;
         pressed = false;
+        if(clicked){
+            if (command == null)
+               return false;
+            command.execute();
+        }
         return clicked;
     }
 
@@ -97,5 +110,9 @@ public class ImageButton implements IView {
         this.height = height;
         this.size = newSize;
         resetInteraction();
+    }
+
+    public void setCommand(IButtonCommand buttonCommand){
+        this.command = Objects.requireNonNull(buttonCommand, "Command must not be null");
     }
 }

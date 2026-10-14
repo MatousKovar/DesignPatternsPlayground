@@ -4,6 +4,7 @@ import java.util.List;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
+import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
@@ -48,33 +49,27 @@ public class MenuView implements IView{
         }
     }
 
-    public void onMouseMoved(double x, double y){
+    public void processMouseMove(double x, double y){
         for (ImageButton button : buttons) {
-            button.onMouseMoved(x, y);
+            button.processMouseMove(x, y);
         }
     }
 
-    public void onMousePressed(double x, double y) {
+    public void processMousePress(double x, double y) {
         for (ImageButton button : buttons) {
-            button.onMousePressed(x, y);
+            button.processMousePress(x, y);
         }
     }
 
-    /**
-     * Note: asi idealne pro budouci rozsirovani tady mit nejakej CommandDesign pattern kde ten button bude mit command a ten metodu execute() 
-     */
-    public MenuAction onMouseReleased(double x, double y) {
-        boolean playClicked = playButton.onMouseReleased(x, y);
-        boolean quitClicked = quitButton.onMouseReleased(x, y);
-        if (playClicked) {
-            resetInteraction();
-            return MenuAction.PLAY;
+    public void setCommands(IButtonCommand playCommand, IButtonCommand quitCommand){
+        playButton.setCommand(playCommand);
+        quitButton.setCommand(quitCommand);
+    }
+
+    public void processMouseRelease(double x, double y) {
+        for (ImageButton button : buttons){
+            button.processMouseRelease(x,y);
         }
-        if (quitClicked) {
-            resetInteraction();
-            return MenuAction.QUIT;
-        }
-        return MenuAction.NONE;
     }
 
     public void resetInteraction() {
