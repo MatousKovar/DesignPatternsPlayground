@@ -6,6 +6,7 @@ import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
 
 public abstract class AbstractMissile extends LifetimeLimitedGameObject {
 
+    private final Position initialPosition;
     private final double initAngle;
     private final int initVelocity;
     protected IMovingStrategy movingStrategy;
@@ -14,6 +15,7 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
 
     protected AbstractMissile(Position initPosition, double initAngle, int initVelocity, IMovingStrategy movingStrategy, MissileSkinType type) {
         super(initPosition);
+        this.initialPosition = new Position(initPosition.getX(), initPosition.getY());
         this.initAngle = initAngle;
         this.initVelocity = initVelocity;
         this.movingStrategy = movingStrategy;
@@ -38,5 +40,10 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
 
     public void move(){
         movingStrategy.updatePosition(this);
+    }
+
+    public void moveFromStart(Position displacement) {
+        position.setX(initialPosition.getX() + displacement.getX());
+        position.setY(initialPosition.getY() + displacement.getY());
     }
 }
