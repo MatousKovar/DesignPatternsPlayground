@@ -36,6 +36,11 @@ public class GameGraphics implements IGameGraphics {
     }
 
     @Override
+    public void drawCircle(Position center, int radius) {
+        implementor.drawCircle(center, radius);
+    }
+
+    @Override
     public void clear() {
         implementor.clear();
     }

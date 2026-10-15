@@ -86,6 +86,23 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     }
 
     @Override
+    public void drawCircle(Position center, int radius) {
+        graphicsContext.save();
+        try {
+            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.setStroke(Color.rgb(0, 0, 0, 0.5));
+            graphicsContext.setLineWidth(1);
+            double diameter = radius * 2.0;
+            double left = center.getX() - radius;
+            double top = center.getY() - radius;
+            graphicsContext.fillOval(left, top, diameter, diameter);
+            graphicsContext.strokeOval(left, top, diameter, diameter);
+        } finally {
+            graphicsContext.restore();
+        }
+    }
+
+    @Override
     public void drawLine(Position startPosition, Position endPosition) {
         graphicsContext.strokeLine(startPosition.getX(), startPosition.getY(), endPosition.getX(), endPosition.getY());
     }

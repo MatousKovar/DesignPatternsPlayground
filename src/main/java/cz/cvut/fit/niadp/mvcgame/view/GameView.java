@@ -9,6 +9,8 @@ import cz.cvut.fit.niadp.mvcgame.visitor.GameDrawer;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 
 public class GameView implements IObserver, IView{ 
+    private static final int TRAJECTORY_DOT_RADIUS = 3;
+
     private final IGameModel model;
     private final GameController controller;
     private IGameGraphics gameGraphics;
@@ -29,6 +31,9 @@ public class GameView implements IObserver, IView{
         if(gameGraphics != null) {
             gameGraphics.clear();
             gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0,0));
+            for (Position point : model.getTrajectoryPreview()) {
+                gameGraphics.drawCircle(point, TRAJECTORY_DOT_RADIUS);
+            }
             model.getGameObjects().forEach(gameObject -> gameObject.accept(gameDrawer));
             model.getGameInfo().accept(gameDrawer);
         }
