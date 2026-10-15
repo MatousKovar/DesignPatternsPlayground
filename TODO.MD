@@ -42,14 +42,16 @@
 - implementovano jako samostatny objekt uvnitr GameModel ktery trackuje cannon object score a moving strategy - model musi updatovat moving strategy a score kdyz se meni
 - Objekt udelam Visitable a GameDrawer bude resit logiku vykresleni
 
-## Main menu a buttony
+## Main menu a buttony 
 - Stranky menu pauza a game pouzivaji GameState, mame MenuState, PauseState a GameState
 - GameState je vicemene wrapper pro klicove MVC hry
 - prechody resi AppStateManager drzi instance jednotlivych stavu
-- Menu je jednoducha stranka a MenuState spolecne s MenuView jsou takovy zjednodusseni architektury kde MenuState resi handling a urcitej stav - pomaha ImageButton, kterej je neco jako model udrzujici info o tlacitkach - hover, isClicked
+- State ma uvnitr buttony, ktere funguji jako commandy, ktere vytvari AppStateManager v konstruktoru - commandy prave meni stavy AppStateManageru
+- ImageButton - je trida ktera se umi renderovat a obsahuje logiku pro hover a kliknuti a obsahuje command kterej dela on click. Command prirazuje GameState
 
 ## 5 zajimavych funkcionalit
 ### menu a pauza - Nova funkce + State design pattern
+- HOTOVO
 - vytvoi se nejakej stav TODO
 - State pattern - Bude nejaky screen 
 

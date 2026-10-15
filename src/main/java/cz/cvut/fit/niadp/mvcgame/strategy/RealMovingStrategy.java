@@ -10,10 +10,16 @@ public class RealMovingStrategy implements IMovingStrategy {
     @Override
     public void updatePosition(AbstractMissile missile) {
         long time = missile.getAge() / MvcGameConfig.MAGIC_TIME_CONST;
-        int dX = (int) (missile.getInitVelocity() * time * Math.cos(missile.getInitAngle()));
-        int dY = (int) (missile.getInitVelocity() * time * Math.sin(missile.getInitAngle()) + 
-            0.5 * MvcGameConfig.GRAVITY * Math.pow(time, 2));
-        missile.move(new Vector(dX, dY));
+        Vector displacement = calculateDisplacement(missile.getInitAngle(), missile.getInitVelocity(), time);
+        missile.move(displacement);
+    }
+
+    @Override
+    public Vector calculateDisplacement(double angle, int power, double time) {
+        int dX = (int) (power * time * Math.cos(angle));
+        int dY = (int) (power * time * Math.sin(angle)
+            + 0.5 * MvcGameConfig.GRAVITY * Math.pow(time, 2));
+        return new Vector(dX, dY);
     }
     
     @Override

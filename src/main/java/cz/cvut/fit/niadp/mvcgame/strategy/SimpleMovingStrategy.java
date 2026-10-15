@@ -9,7 +9,14 @@ public class SimpleMovingStrategy implements IMovingStrategy{
 
     @Override
     public void updatePosition(AbstractMissile missile) {
-        missile.move(new Vector(MvcGameConfig.MOVE_STEP, 0));
+        long time = missile.getAge() / MvcGameConfig.MAGIC_TIME_CONST;
+        Vector displacement = calculateDisplacement(missile.getInitAngle(), missile.getInitVelocity(), time);
+        missile.move(displacement);
+    }
+
+    @Override
+    public Vector calculateDisplacement(double angle, int power, double time) {
+        return new Vector(MvcGameConfig.MOVE_STEP, 0);
     }
 
     @Override

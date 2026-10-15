@@ -17,10 +17,16 @@ public class RandomMovingStrategy implements IMovingStrategy {
 
     @Override
     public void updatePosition(AbstractMissile missile) {
-        missile.move(
-            new Vector(
-                random.nextInt(-MvcGameConfig.MOVE_STEP, 2* MvcGameConfig.MOVE_STEP),
-                random.nextInt(-MvcGameConfig.MOVE_STEP, MvcGameConfig.MOVE_STEP))
+        long time = missile.getAge() / MvcGameConfig.MAGIC_TIME_CONST;
+        Vector displacement = calculateDisplacement(missile.getInitAngle(), missile.getInitVelocity(), time);
+        missile.move(displacement);
+    }
+
+    @Override
+    public Vector calculateDisplacement(double angle, int power, double time) {
+        return new Vector(
+            random.nextInt(-MvcGameConfig.MOVE_STEP, 2 * MvcGameConfig.MOVE_STEP),
+            random.nextInt(-MvcGameConfig.MOVE_STEP, MvcGameConfig.MOVE_STEP)
         );
     }
 
