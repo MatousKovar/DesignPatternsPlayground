@@ -1,6 +1,7 @@
 package cz.cvut.fit.niadp.mvcgame.view;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
 import cz.cvut.fit.niadp.mvcgame.controller.GameController;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.observer.IObserver;
@@ -31,8 +32,13 @@ public class GameView implements IObserver, IView{
         if(gameGraphics != null) {
             gameGraphics.clear();
             gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0,0));
+            ImageSize missileSize = gameGraphics.getImageSize(MvcGameResources.MISSILE_RESOURCE);
             for (Position point : model.getTrajectoryPreview()) {
-                gameGraphics.drawCircle(point, TRAJECTORY_DOT_RADIUS);
+                Position center = new Position(
+                    (int) Math.round(point.getX() + missileSize.width() / 2),
+                    (int) Math.round(point.getY() + missileSize.height() / 2)
+                );
+                gameGraphics.drawCircle(center, TRAJECTORY_DOT_RADIUS);
             }
             model.getGameObjects().forEach(gameObject -> gameObject.accept(gameDrawer));
             model.getGameInfo().accept(gameDrawer);
