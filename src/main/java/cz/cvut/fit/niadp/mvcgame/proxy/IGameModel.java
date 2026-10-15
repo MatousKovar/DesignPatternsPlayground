@@ -1,5 +1,6 @@
 package cz.cvut.fit.niadp.mvcgame.proxy;
 
+import java.util.List;
 import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
@@ -16,6 +17,7 @@ import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 public interface IGameModel extends IObservable {
     public void update();
     public Position getCannonPosition();
+    public List<Position> getTrajectoryPreview();
     public void moveCannonUp();
     public void moveCannonDown();
     public void cannonShoot();

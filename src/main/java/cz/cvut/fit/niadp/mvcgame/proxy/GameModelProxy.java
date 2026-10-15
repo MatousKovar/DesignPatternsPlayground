@@ -1,5 +1,6 @@
 package cz.cvut.fit.niadp.mvcgame.proxy;
 
+import java.util.List;
 import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
@@ -46,6 +47,11 @@ public class GameModelProxy implements IGameModel{
     public Position getCannonPosition() {
         return subject.getCannonPosition();
      }
+
+    @Override
+    public List<Position> getTrajectoryPreview() {
+        return subject.getTrajectoryPreview();
+    }
 
     @Override
     public void moveCannonUp() {
