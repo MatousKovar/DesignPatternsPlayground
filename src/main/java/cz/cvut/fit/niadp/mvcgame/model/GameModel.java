@@ -126,7 +126,8 @@ public class GameModel implements IGameModel{
 
     @Override
     public List<Position> getTrajectoryPreview() {
-        if (!(movingStrategy instanceof RealMovingStrategy)) {
+        if (!(movingStrategy instanceof RealMovingStrategy)
+                && !(movingStrategy instanceof SimpleMovingStrategy)) {
             return List.of();
         }
 
@@ -134,13 +135,20 @@ public class GameModel implements IGameModel{
         Position origin = cannon.getCannonPosition();
         double angle = cannon.getCannonAngle();
         int power = cannon.getCannonPower();
+        Position previousPoint = origin;
         for (int i = 1; i <= TRAJECTORY_POINT_COUNT; i++) {
             double time = i * TRAJECTORY_TIME_STEP;
             Position displacement = movingStrategy.calculateDisplacement(angle, power, time);
-            points.add(new Position(
-                origin.getX() + displacement.getX(),
-                origin.getY() + displacement.getY()
-            ));
+            Position base = origin;
+            if (movingStrategy instanceof SimpleMovingStrategy) {
+                base = previousPoint;
+            }
+            Position point = new Position(
+                base.getX() + displacement.getX(),
+                base.getY() + displacement.getY()
+            );
+            points.add(point);
+            previousPoint = point;
         }
         return points;
     }

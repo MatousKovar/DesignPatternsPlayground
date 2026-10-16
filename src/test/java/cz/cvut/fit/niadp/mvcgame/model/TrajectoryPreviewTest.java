@@ -11,6 +11,7 @@ import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.MissileA;
 import cz.cvut.fit.niadp.mvcgame.proxy.GameModelProxy;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.niadp.mvcgame.strategy.RealMovingStrategy;
+import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 
 public class TrajectoryPreviewTest {
 
@@ -63,10 +64,32 @@ public class TrajectoryPreviewTest {
     }
 
     @Test
-    public void previewIsEmptyForSimpleAndRandomMovement() {
+    public void simplePreviewMatchesSuccessiveMissilePositions() {
         GameModel model = new GameModel();
         model.toggleMovingStrategy();
-        Assert.assertTrue(model.getTrajectoryPreview().isEmpty());
+        model.aimCannonUp();
+        model.cannonPowerUp();
+        List<Position> points = model.getTrajectoryPreview();
+        Assert.assertEquals(20, points.size());
+        MissileA missile = new MissileA(
+            new Position(model.getCannonPosition().getX(), model.getCannonPosition().getY()),
+            model.getGameInfo().getCannonAngle(), (int) model.getGameInfo().getCannonPower(),
+            new SimpleMovingStrategy(), MissileSkinType.FIRST
+        );
+        for (Position point : points) {
+            missile.move();
+            Assert.assertEquals(missile.getPosition().getX(), point.getX());
+            Assert.assertEquals(missile.getPosition().getY(), point.getY());
+        }
+        Assert.assertEquals(MvcGameConfig.CANNON_POS_X, model.getCannonPosition().getX());
+        Assert.assertTrue(model.getMissiles().isEmpty());
+    }
+
+    @Test
+    public void previewIsEmptyOnlyForRandomMovement() {
+        GameModel model = new GameModel();
+        model.toggleMovingStrategy();
+        Assert.assertEquals(20, model.getTrajectoryPreview().size());
         model.toggleMovingStrategy();
         Assert.assertTrue(model.getTrajectoryPreview().isEmpty());
         model.toggleMovingStrategy();
