@@ -1,8 +1,11 @@
 package cz.cvut.fit.niadp.mvcgame.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -276,36 +279,68 @@ public class GameModel implements IGameModel{
         notifyObservers();
     }
 
-    private static class Memento{
-        private Object cannonMemento;
-        private Set<AbstractMissile> missiles;
-        private Set<AbstractEnemy> enemies;
-        private Object gameInfoMemento;
-        private IMovingStrategy movingStrategy;
-    }
+    private record Memento(
+        Object cannonMemento,
+        Map<AbstractMissile, Object> missiles,
+        Map<AbstractEnemy, Object> enemies,
+        Map<AbstractImpactObject, Object> impacts,
+        Object gameInfoMemento,
+        IMovingStrategy movingStrategy,
+        Map<IMovingStrategy, Object> strategyMementos,
+        List<AbstractGameCommand> commandHistory
+    ) {}
 
     public Object createMemento(){
-        Memento gameModelSnapshot = new Memento();
-        gameModelSnapshot.cannonMemento = cannon.createMemento();
-        gameModelSnapshot.missiles = new HashSet<>(this.missiles);
-        gameModelSnapshot.enemies = new HashSet<>(this.enemies);
-        gameModelSnapshot.movingStrategy = this.movingStrategy;
-        gameModelSnapshot.gameInfoMemento = gameInfo.createMemento();
-        
-        return gameModelSnapshot;
+        Map<IMovingStrategy, Object> strategies = new IdentityHashMap<>();
+        strategies.put(movingStrategy, movingStrategy.createMemento());
+        for (AbstractMissile missile : missiles) {
+            IMovingStrategy strategy = missile.getMovingStrategy();
+            if (!strategies.containsKey(strategy)) {
+                strategies.put(strategy, strategy.createMemento());
+            }
+        }
+        return new Memento(
+            cannon.createMemento(),
+            snapshotObjects(missiles),
+            snapshotObjects(enemies),
+            snapshotObjects(impactAnimations),
+            gameInfo.createMemento(),
+            movingStrategy,
+            Collections.unmodifiableMap(strategies),
+            List.copyOf(executedCommands)
+        );
     }
 
     public void setMemento(Object memento){
-        Memento gameModelSnapshot = (Memento)memento;
-        cannon.restoreMemento(gameModelSnapshot.cannonMemento);
-        this.missiles.clear();
-        this.missiles.addAll(gameModelSnapshot.missiles);
-        this.enemies.clear();
-        this.enemies.addAll(gameModelSnapshot.enemies);
-        this.impactAnimations.clear();
-        gameInfo.restoreMemento(gameModelSnapshot.gameInfoMemento);
-        movingStrategy = gameModelSnapshot.movingStrategy;
+        Memento snapshot = (Memento) memento;
+        cannon.restoreMemento(snapshot.cannonMemento());
+        restoreObjects(missiles, snapshot.missiles());
+        restoreObjects(enemies, snapshot.enemies());
+        restoreObjects(impactAnimations, snapshot.impacts());
+        snapshot.strategyMementos().forEach(IMovingStrategy::restoreMemento);
+        gameInfo.restoreMemento(snapshot.gameInfoMemento());
+        movingStrategy = snapshot.movingStrategy();
         gameInfo.setMovingStrategy(movingStrategy);
+        executedCommands.clear();
+        executedCommands.addAll(snapshot.commandHistory());
+        unexecutedCommands.clear();
+        notifyObservers();
+    }
+
+    private <T extends GameObject> Map<T, Object> snapshotObjects(Set<T> objects) {
+        Map<T, Object> snapshots = new IdentityHashMap<>();
+        for (T object : objects) {
+            snapshots.put(object, object.createMemento());
+        }
+        return Collections.unmodifiableMap(snapshots);
+    }
+
+    private <T extends GameObject> void restoreObjects(Set<T> objects, Map<T, Object> snapshots) {
+        objects.clear();
+        snapshots.forEach((object, snapshot) -> {
+            object.restoreMemento(snapshot);
+            objects.add(object);
+        });
     }
 
     @Override
@@ -317,7 +352,6 @@ public class GameModel implements IGameModel{
     public void undoLastCommand() {
         if(!executedCommands.isEmpty()){
             executedCommands.pop().unExecute();
-            notifyObservers();
         }
     }
 }

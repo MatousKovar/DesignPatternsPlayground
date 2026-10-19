@@ -34,6 +34,10 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
         return initVelocity;
     }
 
+    public IMovingStrategy getMovingStrategy() {
+        return movingStrategy;
+    }
+
     public Hitbox getHitbox(){
         return this.hitbox;
     }

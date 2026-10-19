@@ -9,6 +9,12 @@ public interface IMovingStrategy {
 
     public Position calculateDisplacement(double angle, int power, double time);
 
+    default Object createMemento() {
+        return null;
+    }
+
+    default void restoreMemento(Object memento) {}
+
     public IMovingStrategy getNextStrategy(GameModel model);
 
     public String getName();

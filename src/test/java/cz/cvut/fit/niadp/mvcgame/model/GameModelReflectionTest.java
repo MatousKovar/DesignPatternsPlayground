@@ -1,6 +1,7 @@
 package cz.cvut.fit.niadp.mvcgame.model;
 import org.junit.Assert;
 import org.junit.Test;
+import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.stream.IntStream;
@@ -10,12 +11,13 @@ public class GameModelReflectionTest {
     private static final int ITERATION_START_CONST = 1;
     private static final int MISSILE_COUNT = 50;
     private static final int AIM_COUNT = 10;
-    private static final int MOVE_COUNT = 100000;
+    private static final int MOVE_COUNT = MvcGameConfig.MAX_X / MvcGameConfig.MOVE_STEP + 1;
     private static final int EXPECTED_MISSILES_COUNT = 0;
 
     @Test
     public void moveMissilesTest() throws NoSuchMethodException {
         GameModel model = new GameModel();
+        model.toggleMovingStrategy();
         Method method = model.getClass().getDeclaredMethod(MOVE_MISSILES_METHOD_NAME);
         method.setAccessible(true);
         IntStream.rangeClosed(ITERATION_START_CONST, AIM_COUNT).forEach(i->model.aimCannonUp());

@@ -30,7 +30,7 @@
 - dodelano kompletni hybani delem a nastavovani sily
 
 ## Memento
-- Uklada stav GameInfo a Cannon a pozice enemy
+- Ukládá stav kanónu, skóre, pozice střel a nepřátel, stáří střel a výbuchů, stav strategií a historii undo. Po obnovení překreslí hru.
 
 
 ## Flyweight
