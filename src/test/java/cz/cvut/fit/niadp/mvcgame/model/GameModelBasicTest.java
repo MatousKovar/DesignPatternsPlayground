@@ -113,6 +113,8 @@ public class GameModelBasicTest {
             .orElseThrow();
         enemy.getPosition().setX(x);
         enemy.getPosition().setY(y);
+        enemy.setMovingStrategy((initialPosition, speed, elapsedSeconds) -> initialPosition);
+        enemy.spawn(0);
         return enemy;
     }
 

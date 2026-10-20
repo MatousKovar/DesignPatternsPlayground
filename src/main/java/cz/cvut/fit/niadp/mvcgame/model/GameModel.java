@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -16,7 +15,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
-import cz.cvut.fit.niadp.mvcgame.builder.EnemySpawn;
 import cz.cvut.fit.niadp.mvcgame.builder.Level;
 import cz.cvut.fit.niadp.mvcgame.builder.LevelBuilder;
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
@@ -42,9 +40,7 @@ public class GameModel implements IGameModel{
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
     private final Set<AbstractEnemy> enemies;
-    private final Map<AbstractEnemy, Long> enemySpawnTimes = new IdentityHashMap<>();
-    private final List<EnemySpawn> pendingSpawns = new ArrayList<>();
-    private long levelStartedAtNanos;
+    private Level level;
     private final Set<AbstractImpactObject> impactAnimations;
     private IGameObjectsFactory factory;
     protected IMovingStrategy movingStrategy;
@@ -68,7 +64,9 @@ public class GameModel implements IGameModel{
     }
 
     public void update() {
-        spawnDueEnemies();
+        if (level != null) {
+            enemies.addAll(level.update(currentTimeNanos()));
+        }
         moveEnemies();
         moveMissiles();
         executeCommands();
@@ -100,7 +98,6 @@ public class GameModel implements IGameModel{
         }
 
         boolean removedEnemies = enemies.removeAll(enemiesToRemove);
-        enemiesToRemove.forEach(enemySpawnTimes::remove);
         boolean removedMissiles = missiles.removeAll(missilesToRemove);
         if (collisionOccurred || removedEnemies || removedMissiles) {
             notifyObservers();
@@ -122,11 +119,8 @@ public class GameModel implements IGameModel{
 
     private void moveEnemies() {
         long now = currentTimeNanos();
-        enemySpawnTimes.keySet().retainAll(enemies);
         for (AbstractEnemy enemy : enemies) {
-            long spawnedAt = enemySpawnTimes.computeIfAbsent(enemy, ignored -> now);
-            double elapsedSeconds = (now - spawnedAt) / 1_000_000_000.0;
-            enemy.move(MvcGameConfig.ENEMY_MOVE_SPEED, elapsedSeconds);
+            enemy.update(MvcGameConfig.ENEMY_MOVE_SPEED, now);
         }
     }
 
@@ -211,30 +205,12 @@ public class GameModel implements IGameModel{
 
     @Override
     public void loadLevel(Level level) {
-        List<EnemySpawn> spawns = level.getEnemySpawns();
+        this.level = Objects.requireNonNull(level, "Level must not be null");
         enemies.clear();
-        enemySpawnTimes.clear();
-        pendingSpawns.clear();
-        pendingSpawns.addAll(spawns);
-        levelStartedAtNanos = currentTimeNanos();
-        spawnDueEnemies();
+        long now = currentTimeNanos();
+        level.start(now);
+        enemies.addAll(level.update(now));
         notifyObservers();
-    }
-
-    private void spawnDueEnemies() {
-        if (pendingSpawns.isEmpty()) {
-            return;
-        }
-        long elapsedMillis = (currentTimeNanos() - levelStartedAtNanos) / 1_000_000;
-        Iterator<EnemySpawn> iterator = pendingSpawns.iterator();
-        while (iterator.hasNext()) {
-            EnemySpawn spawn = iterator.next();
-            if (spawn.spawnTimeMillis() <= elapsedMillis) {
-                enemies.add(spawn.enemy());
-                enemySpawnTimes.put(spawn.enemy(), currentTimeNanos());
-                iterator.remove();
-            }
-        }
     }
 
     protected long currentTimeNanos() {
@@ -254,8 +230,8 @@ public class GameModel implements IGameModel{
 
         Position spawnPosition = new Position(x, y);
         AbstractEnemy new_enemy = factory.createEnemy(spawnPosition);
+        new_enemy.spawn(currentTimeNanos());
         enemies.add(new_enemy);
-        enemySpawnTimes.put(new_enemy, currentTimeNanos());
         notifyObservers();
     }
 
