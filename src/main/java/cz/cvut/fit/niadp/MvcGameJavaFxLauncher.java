@@ -43,7 +43,7 @@ public class MvcGameJavaFxLauncher extends Application {
         root.getChildren().add( canvas );
         GraphicsContext gc = canvas.getGraphicsContext2D();
         IGameGraphics gameGraphics = new GameGraphics(new JavaFxGraphics(gc));
-        AppStateManager appStateManager = new AppStateManager(new MenuState(gameGraphics),new GameState(theMvcGame), new PauseState(gameGraphics)); // Init page states
+        AppStateManager appStateManager = new AppStateManager(new MenuState(gameGraphics, theMvcGame),new GameState(theMvcGame), new PauseState(gameGraphics)); // Init page states
         ArrayList<String> pressedKeysCodes = new ArrayList<>();
         //register event handlers in JavaFX
         theScene.setOnKeyPressed(

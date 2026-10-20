@@ -155,6 +155,11 @@ public class GameModelProxy implements IGameModel{
     }
 
     @Override
+    public void generateLevel() {
+        subject.generateLevel();
+    }
+
+    @Override
     public void loadLevel(Level level) {
         subject.loadLevel(level);
     }

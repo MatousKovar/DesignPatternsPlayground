@@ -17,6 +17,7 @@ import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.builder.EnemySpawn;
 import cz.cvut.fit.niadp.mvcgame.builder.Level;
+import cz.cvut.fit.niadp.mvcgame.builder.LevelBuilder;
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
@@ -179,6 +180,12 @@ public class GameModel implements IGameModel{
     }
 
     @Override
+    public void generateLevel() {
+        Level level = new LevelBuilder(factory).build();
+        loadLevel(level);
+    }
+
+    @Override
     public void loadLevel(Level level) {
         enemies.clear();
         for (EnemySpawn spawn : level.getEnemySpawns()) {
@@ -258,15 +265,6 @@ public class GameModel implements IGameModel{
     }
 
     public void toggleMovingStrategy(){
-        /*if(movingStrategy instanceof SimpleMovingStrategy){
-            movingStrategy = new RandomMovingStrategy();
-        }else if(movingStrategy instanceof RandomMovingStrategy){
-            movingStrategy = new RealMovingStrategy();
-        }else if( movingStrategy instanceof RealMovingStrategy){
-            movingStrategy = new SimpleMovingStrategy();
-        }else{
-
-        }*/
         movingStrategy = movingStrategy.getNextStrategy(this);
         gameInfo.setMovingStrategy(movingStrategy);
         notifyObservers();

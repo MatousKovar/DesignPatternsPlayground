@@ -27,6 +27,10 @@ public class MvcGame {
         controller.processPressedKeys(pressedKeysCodes);
     }
 
+    public void generateLevel() {
+        model.generateLevel();
+    }
+
     public String getWindowTitle() {
         return "The NI-ADP MvcGame";
     }

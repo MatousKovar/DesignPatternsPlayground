@@ -41,4 +41,5 @@ public interface IGameModel extends IObservable {
     public void undoLastCommand();
     public void spawnNewEnemy();
     public void loadLevel(Level level);
+    public void generateLevel();
 }
