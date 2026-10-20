@@ -1,5 +1,9 @@
 package cz.cvut.fit.niadp.mvcgame.builder;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
+
 public class LevelBuilder {
     private int enemyCount = 5;
     private int minX = 600;
@@ -13,5 +17,16 @@ public class LevelBuilder {
 
         this.enemyCount  = count;
         return this;
+    }
+
+    public Level build() {
+        List<EnemySpawn> spawns = new ArrayList<>(enemyCount);
+        ThreadLocalRandom random = ThreadLocalRandom.current();
+        for (int i = 0; i < enemyCount; i++) {
+            int x = random.nextInt(minX, maxX);
+            int y = random.nextInt(minY, maxY);
+            spawns.add(new EnemySpawn(x, y, 0));
+        }
+        return new Level(spawns);
     }
 }
