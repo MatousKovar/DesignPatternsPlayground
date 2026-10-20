@@ -61,7 +61,7 @@
 - stavi na stejnem rozhrani jako missile - LifetimeLimitedGameObject
 
 ### nahled strely kanonu
-- jako v angry birds - TODO 
+- HOTOVO
 
 ### Builder - design pattern + tvorba levelu
 - TODO 
