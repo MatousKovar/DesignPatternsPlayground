@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
+import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
@@ -15,20 +16,17 @@ public class LevelBuilder {
 
     private final IGameObjectsFactory factory;
 
-    private int enemyCount = 5;
-    private int minX = 600;
-    private int minY = 150;
-    private int maxX = 1300;
-    private int maxY = 800;
+    private int enemyCount = MvcGameConfig.DEFAULT_ENEMY_COUNT;
+    private int minX = MvcGameConfig.ENEMY_SPAWN_MIN_X;
+    private int minY = MvcGameConfig.ENEMY_SPAWN_MIN_Y;
+    private int maxX = MvcGameConfig.ENEMY_SPAWN_MAX_X;
+    private int maxY = MvcGameConfig.ENEMY_SPAWN_MAX_Y;
 
     public LevelBuilder(IGameObjectsFactory factory) {
         this.factory = Objects.requireNonNull(factory, "Factory must not be null");
     }
 
-    public LevelBuilder enemyCount(int count){
-        if (count <= 0)
-            throw new IllegalArgumentException("pocet nepratel musi byt kladne cislo");
-
+    public LevelBuilder setEnemyCount(int count){
         this.enemyCount  = count;
         return this;
     }
@@ -40,7 +38,8 @@ public class LevelBuilder {
         for (int i = 0; i < enemyCount; i++) {
             AbstractEnemy enemy = factory.createEnemy(new Position(minX, minY));
             placeEnemy(enemy, spawns, random);
-            spawns.add(new EnemySpawn(enemy, 0));
+            long spawnTimeMillis = i * MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS;
+            spawns.add(new EnemySpawn(enemy, spawnTimeMillis));
         }
         return new Level(spawns);
     }

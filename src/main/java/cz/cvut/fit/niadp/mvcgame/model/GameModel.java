@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -41,6 +42,8 @@ public class GameModel implements IGameModel{
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
     private final Set<AbstractEnemy> enemies;
+    private final List<EnemySpawn> pendingSpawns = new ArrayList<>();
+    private long levelStartedAtNanos;
     private final Set<AbstractImpactObject> impactAnimations;
     private IGameObjectsFactory factory;
     protected IMovingStrategy movingStrategy;
@@ -64,6 +67,7 @@ public class GameModel implements IGameModel{
     }
 
     public void update() {
+        spawnDueEnemies();
         moveMissiles();
         executeCommands();
         checkCollissions();
@@ -187,11 +191,32 @@ public class GameModel implements IGameModel{
 
     @Override
     public void loadLevel(Level level) {
+        List<EnemySpawn> spawns = level.getEnemySpawns();
         enemies.clear();
-        for (EnemySpawn spawn : level.getEnemySpawns()) {
-            enemies.add(spawn.enemy());
-        }
+        pendingSpawns.clear();
+        pendingSpawns.addAll(spawns);
+        levelStartedAtNanos = currentTimeNanos();
+        spawnDueEnemies();
         notifyObservers();
+    }
+
+    private void spawnDueEnemies() {
+        if (pendingSpawns.isEmpty()) {
+            return;
+        }
+        long elapsedMillis = (currentTimeNanos() - levelStartedAtNanos) / 1_000_000;
+        Iterator<EnemySpawn> iterator = pendingSpawns.iterator();
+        while (iterator.hasNext()) {
+            EnemySpawn spawn = iterator.next();
+            if (spawn.spawnTimeMillis() <= elapsedMillis) {
+                enemies.add(spawn.enemy());
+                iterator.remove();
+            }
+        }
+    }
+
+    protected long currentTimeNanos() {
+        return System.nanoTime();
     }
 
     public void spawnNewEnemy(){

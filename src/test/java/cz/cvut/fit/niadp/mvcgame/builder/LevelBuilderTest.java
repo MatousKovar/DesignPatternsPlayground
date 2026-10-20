@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
+import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.GameModel;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
@@ -27,14 +28,14 @@ public class LevelBuilderTest {
             }
         };
 
-        Level level = new LevelBuilder(factory).enemyCount(8).build();
+        Level level = new LevelBuilder(factory).setEnemyCount(8).build();
 
         Assert.assertEquals(8, createdEnemies.size());
         Assert.assertEquals(8, level.getEnemySpawns().size());
         for (int i = 0; i < createdEnemies.size(); i++) {
             EnemySpawn spawn = level.getEnemySpawns().get(i);
             Assert.assertSame(createdEnemies.get(i), spawn.enemy());
-            Assert.assertEquals(0, spawn.spawnTimeMillis());
+            Assert.assertEquals(i * MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS, spawn.spawnTimeMillis());
         }
     }
 }
