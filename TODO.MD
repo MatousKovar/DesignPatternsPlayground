@@ -49,8 +49,13 @@
 - State ma uvnitr buttony, ktere funguji jako commandy, ktere vytvari AppStateManager v konstruktoru - commandy prave meni stavy AppStateManageru
 - ImageButton - je trida ktera se umi renderovat a obsahuje logiku pro hover a kliknuti a obsahuje command kterej dela on click. Command prirazuje GameState
 
+## Builder
+- builder vytvori Level object kterej obsahuje enemy a kdy se maji spawnout
+- level objekt je vytvoren pri startgamecommandu a je predan Modelu
+- model pri update zaroven vola level, ktery na zaklade casu rekne jestli se ma spawnout enemy nebo ne a kde
+
 ## 5 zajimavych funkcionalit
-### menu a pauza - Nova funkce + State design pattern
+### menu - Nova funkce
 - HOTOVO
 - vytvoi se nejakej stav TODO
 - State pattern - Bude nejaky screen 
@@ -64,7 +69,7 @@
 - HOTOVO
 
 ### Builder - design pattern + tvorba levelu
-- TODO 
+- HOTOVO
 
 ### Decorator - design pattern + zajimava funkcionalita
 - prida strele specialni schopnost
