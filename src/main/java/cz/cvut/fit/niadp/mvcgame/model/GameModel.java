@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
@@ -14,6 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
+import cz.cvut.fit.niadp.mvcgame.builder.EnemySpawn;
+import cz.cvut.fit.niadp.mvcgame.builder.Level;
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractCannon;
@@ -172,6 +175,15 @@ public class GameModel implements IGameModel{
 
     public void cannonShoot(){
         missiles.addAll(cannon.shoot());
+        notifyObservers();
+    }
+
+    @Override
+    public void loadLevel(Level level) {
+        enemies.clear();
+        for (EnemySpawn spawn : level.getEnemySpawns()) {
+            enemies.add(spawn.enemy());
+        }
         notifyObservers();
     }
 

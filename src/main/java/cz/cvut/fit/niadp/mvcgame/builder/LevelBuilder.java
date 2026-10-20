@@ -49,9 +49,6 @@ public class LevelBuilder {
         Hitbox hitbox = enemy.getHitbox();
         int width = hitbox.getWidth();
         int height = hitbox.getHeight();
-        if (width <= 0 || height <= 0 || width > maxX - minX || height > maxY - minY) {
-            throw new IllegalStateException("Enemy hitbox does not fit inside the spawn area");
-        }
 
         for (int attempt = 0; attempt < MAX_PLACEMENT_ATTEMPTS; attempt++) {
             int x = random.nextInt(minX, maxX - width + 1);

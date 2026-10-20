@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
+import cz.cvut.fit.niadp.mvcgame.builder.Level;
 import cz.cvut.fit.niadp.mvcgame.model.GameModel;
 import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
@@ -151,6 +152,11 @@ public class GameModelProxy implements IGameModel{
     @Override
     public void undoLastCommand() {
         subject.undoLastCommand();
+    }
+
+    @Override
+    public void loadLevel(Level level) {
+        subject.loadLevel(level);
     }
 
     @Override

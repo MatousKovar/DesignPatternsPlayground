@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
+import cz.cvut.fit.niadp.mvcgame.builder.Level;
 import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
@@ -39,4 +40,5 @@ public interface IGameModel extends IObservable {
     public void registerCommand(AbstractGameCommand command);
     public void undoLastCommand();
     public void spawnNewEnemy();
+    public void loadLevel(Level level);
 }
