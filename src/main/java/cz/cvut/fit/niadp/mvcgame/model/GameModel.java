@@ -42,6 +42,7 @@ public class GameModel implements IGameModel{
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
     private final Set<AbstractEnemy> enemies;
+    private final Map<AbstractEnemy, Long> enemySpawnTimes = new IdentityHashMap<>();
     private final List<EnemySpawn> pendingSpawns = new ArrayList<>();
     private long levelStartedAtNanos;
     private final Set<AbstractImpactObject> impactAnimations;
@@ -68,6 +69,7 @@ public class GameModel implements IGameModel{
 
     public void update() {
         spawnDueEnemies();
+        moveEnemies();
         moveMissiles();
         executeCommands();
         checkCollissions();
@@ -98,6 +100,7 @@ public class GameModel implements IGameModel{
         }
 
         boolean removedEnemies = enemies.removeAll(enemiesToRemove);
+        enemiesToRemove.forEach(enemySpawnTimes::remove);
         boolean removedMissiles = missiles.removeAll(missilesToRemove);
         if (collisionOccurred || removedEnemies || removedMissiles) {
             notifyObservers();
@@ -114,6 +117,16 @@ public class GameModel implements IGameModel{
     private void executeCommands(){
         while (!unexecutedCommands.isEmpty()) {
             executedCommands.push(unexecutedCommands.poll().doExecute());
+        }
+    }
+
+    private void moveEnemies() {
+        long now = currentTimeNanos();
+        enemySpawnTimes.keySet().retainAll(enemies);
+        for (AbstractEnemy enemy : enemies) {
+            long spawnedAt = enemySpawnTimes.computeIfAbsent(enemy, ignored -> now);
+            double elapsedSeconds = (now - spawnedAt) / 1_000_000_000.0;
+            enemy.move(MvcGameConfig.ENEMY_MOVE_SPEED, elapsedSeconds);
         }
     }
 
@@ -164,6 +177,13 @@ public class GameModel implements IGameModel{
         return points;
     }
 
+    @Override
+    public boolean hasEnemyEscaped() {
+        return enemies.stream().anyMatch(enemy ->
+            enemy.getHitbox().getX() + enemy.getHitbox().getWidth() <= MvcGameConfig.MIN_X
+        );
+    }
+
     public Position getCannonPosition(){
         return cannon.getPosition();
     }
@@ -193,6 +213,7 @@ public class GameModel implements IGameModel{
     public void loadLevel(Level level) {
         List<EnemySpawn> spawns = level.getEnemySpawns();
         enemies.clear();
+        enemySpawnTimes.clear();
         pendingSpawns.clear();
         pendingSpawns.addAll(spawns);
         levelStartedAtNanos = currentTimeNanos();
@@ -210,6 +231,7 @@ public class GameModel implements IGameModel{
             EnemySpawn spawn = iterator.next();
             if (spawn.spawnTimeMillis() <= elapsedMillis) {
                 enemies.add(spawn.enemy());
+                enemySpawnTimes.put(spawn.enemy(), currentTimeNanos());
                 iterator.remove();
             }
         }
@@ -233,6 +255,7 @@ public class GameModel implements IGameModel{
         Position spawnPosition = new Position(x, y);
         AbstractEnemy new_enemy = factory.createEnemy(spawnPosition);
         enemies.add(new_enemy);
+        enemySpawnTimes.put(new_enemy, currentTimeNanos());
         notifyObservers();
     }
 

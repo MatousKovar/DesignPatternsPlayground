@@ -45,6 +45,11 @@ public class GameModelProxy implements IGameModel{
     }
 
     @Override
+    public boolean hasEnemyEscaped() {
+        return subject.hasEnemyEscaped();
+    }
+
+    @Override
     public Position getCannonPosition() {
         return subject.getCannonPosition();
      }

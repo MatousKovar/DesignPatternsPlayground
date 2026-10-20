@@ -23,7 +23,7 @@ public class MenuState implements IAppState{
     }
     
     @Override
-    public void processPressedKeys(List<String> keys) {
+    public void processPressedKeys(List<String> keys, AppStateManager navigator) {
         return;
     }
 

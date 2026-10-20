@@ -12,7 +12,7 @@ public class PauseState implements IAppState{
         this.view = new PauseView(graphics);
     }
     @Override
-    public void processPressedKeys(List<String> keys) {
+    public void processPressedKeys(List<String> keys, AppStateManager navigator) {
         return;
     }
 

@@ -31,6 +31,10 @@ public class MvcGame {
         model.generateLevel();
     }
 
+    public boolean hasEnemyEscaped() {
+        return model.hasEnemyEscaped();
+    }
+
     public String getWindowTitle() {
         return "The NI-ADP MvcGame";
     }

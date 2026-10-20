@@ -26,7 +26,7 @@ public class AppStateManager{
     }
 
     public void processPressedKeys(List<String> keys){
-        this.currentState.processPressedKeys(keys);
+        this.currentState.processPressedKeys(keys, this);
         this.render();
     }
 
