@@ -7,6 +7,10 @@ import java.util.List;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 
 public class Level {
+    private record SpawnMemento(EnemySpawn spawn, Object enemyMemento) {}
+
+    private record Memento(Long elapsedNanos, List<SpawnMemento> pendingSpawns) {}
+
     private final List<EnemySpawn> enemySpawns;
     private final List<EnemySpawn> pendingSpawns = new ArrayList<>();
     private Long startedAtNanos;
@@ -42,5 +46,36 @@ public class Level {
             }
         }
         return spawnedEnemies;
+    }
+
+    public Object createMemento(long nowNanos) {
+        Long elapsedNanos = null;
+        List<EnemySpawn> spawnsToSave = enemySpawns;
+        if (startedAtNanos != null) {
+            elapsedNanos = nowNanos - startedAtNanos;
+            spawnsToSave = pendingSpawns;
+        }
+
+        List<SpawnMemento> savedSpawns = new ArrayList<>();
+        for (EnemySpawn spawn : spawnsToSave) {
+            savedSpawns.add(new SpawnMemento(spawn, spawn.enemy().createMemento()));
+        }
+
+        return new Memento(elapsedNanos, List.copyOf(savedSpawns));
+    }
+
+    public void restoreMemento(Object memento, long nowNanos) {
+        Memento snapshot = (Memento) memento;
+        startedAtNanos = null;
+        if (snapshot.elapsedNanos() != null) {
+            startedAtNanos = nowNanos - snapshot.elapsedNanos();
+        }
+
+        pendingSpawns.clear();
+        for (SpawnMemento savedSpawn : snapshot.pendingSpawns()) {
+            EnemySpawn spawn = savedSpawn.spawn();
+            spawn.enemy().restoreMemento(savedSpawn.enemyMemento());
+            pendingSpawns.add(spawn);
+        }
     }
 }

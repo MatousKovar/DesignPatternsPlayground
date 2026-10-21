@@ -321,11 +321,14 @@ public class GameModel implements IGameModel{
         Object gameInfoMemento,
         IMovingStrategy movingStrategy,
         Map<IMovingStrategy, Object> strategyMementos,
-        List<AbstractGameCommand> commandHistory
+        List<AbstractGameCommand> commandHistory,
+        Level level,
+        Object levelMemento
     ) {}
 
     public Object createMemento(){
         Map<IMovingStrategy, Object> strategies = new IdentityHashMap<>();
+        Object levelMemento = level.createMemento(currentTimeNanos());
         strategies.put(movingStrategy, movingStrategy.createMemento());
         for (AbstractMissile missile : missiles) {
             IMovingStrategy strategy = missile.getMovingStrategy();
@@ -341,12 +344,16 @@ public class GameModel implements IGameModel{
             gameInfo.createMemento(),
             movingStrategy,
             Collections.unmodifiableMap(strategies),
-            List.copyOf(executedCommands)
+            List.copyOf(executedCommands),
+            level,
+            levelMemento
         );
     }
 
     public void setMemento(Object memento){
         Memento snapshot = (Memento) memento;
+        level = snapshot.level();
+        level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());
         cannon.restoreMemento(snapshot.cannonMemento());
         restoreObjects(missiles, snapshot.missiles());
         restoreObjects(enemies, snapshot.enemies());
