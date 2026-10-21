@@ -6,6 +6,13 @@ import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.strategy.IEnemyMovingStrategy;
 
 public abstract class AbstractEnemy extends GameObject {
+    private record Memento(
+        Object positionMemento,
+        Position initialPosition,
+        Long ageNanos,
+        IEnemyMovingStrategy movingStrategy
+    ) {}
+
     protected EnemySkinType type;
     protected Hitbox hitbox;
     private IEnemyMovingStrategy movingStrategy;
@@ -42,6 +49,44 @@ public abstract class AbstractEnemy extends GameObject {
         Position nextPosition = movingStrategy.calculatePosition(initialPosition, speed, elapsedSeconds);
         position.setX(nextPosition.getX());
         position.setY(nextPosition.getY());
+    }
+
+    @Override
+    public Object createMemento() {
+        Long ageNanos = null;
+        if (spawnedAtNanos != null) {
+            ageNanos = currentTimeNanos() - spawnedAtNanos;
+        }
+
+        return new Memento(
+            super.createMemento(),
+            copyPosition(initialPosition),
+            ageNanos,
+            movingStrategy
+        );
+    }
+
+    @Override
+    public void restoreMemento(Object memento) {
+        Memento snapshot = (Memento) memento;
+        super.restoreMemento(snapshot.positionMemento());
+        initialPosition = copyPosition(snapshot.initialPosition());
+        movingStrategy = snapshot.movingStrategy();
+        spawnedAtNanos = null;
+        if (snapshot.ageNanos() != null) {
+            spawnedAtNanos = currentTimeNanos() - snapshot.ageNanos();
+        }
+    }
+
+    protected long currentTimeNanos() {
+        return System.nanoTime();
+    }
+
+    private Position copyPosition(Position original) {
+        if (original == null) {
+            return null;
+        }
+        return new Position(original.getX(), original.getY());
     }
     
     public EnemySkinType getEnemySkinType(){
