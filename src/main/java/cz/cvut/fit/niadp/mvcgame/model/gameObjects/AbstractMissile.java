@@ -1,6 +1,9 @@
 package cz.cvut.fit.niadp.mvcgame.model.gameObjects;
 
 import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
+
+import java.util.Set;
+
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
 
@@ -54,4 +57,6 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     public MissileSkinType getMissileSkinType(){
         return this.type;
     };
+
+    public abstract Set<AbstractEnemy> getAffectedEnemies(AbstractEnemy hitEnemy,Set<AbstractEnemy> enemies);
 }
