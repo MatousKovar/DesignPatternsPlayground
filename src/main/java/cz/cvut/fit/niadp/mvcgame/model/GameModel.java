@@ -86,11 +86,15 @@ public class GameModel implements IGameModel{
                     missilesToRemove.add(missile);
                     collisionOccurred = true;
 
-                    if (enemiesToRemove.add(enemy)) {
-                        gameInfo.increaseScore(enemy.getScoreForKill());
-                        impactAnimations.add(factory.createImpact(enemy.getPosition(),
-                                                                  enemy.getHitbox().getWidth(),
-                                                                  enemy.getHitbox().getHeight()));
+                    for (AbstractEnemy affectedEnemy : missile.getAffectedEnemies(enemy, enemies)) {
+                        if (enemiesToRemove.add(affectedEnemy)) {
+                            gameInfo.increaseScore(affectedEnemy.getScoreForKill());
+                            impactAnimations.add(factory.createImpact(
+                                affectedEnemy.getPosition(),
+                                affectedEnemy.getHitbox().getWidth(),
+                                affectedEnemy.getHitbox().getHeight()
+                            ));
+                        }
                     }
                     break;
                 }
