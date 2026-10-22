@@ -50,4 +50,8 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
         position.setX(initialPosition.getX() + displacement.getX());
         position.setY(initialPosition.getY() + displacement.getY());
     }
+
+    public MissileSkinType getMissileSkinType(){
+        return this.type;
+    };
 }

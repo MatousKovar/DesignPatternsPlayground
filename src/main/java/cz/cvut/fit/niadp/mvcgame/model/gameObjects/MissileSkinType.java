@@ -4,7 +4,8 @@ import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 
 public enum MissileSkinType {
 
-    FIRST(MvcGameResources.MISSILE_RESOURCE,30,29);
+    FIRST(MvcGameResources.MISSILE_RESOURCE,30,29),
+    EXPLOSIVE(MvcGameResources.EXPLOSIVE_MISSILE_IMAGE,30,29);
     
     private final int width;
     private final int height;
@@ -28,5 +29,4 @@ public enum MissileSkinType {
         return this.imagePath;
     }
 
-   
 }

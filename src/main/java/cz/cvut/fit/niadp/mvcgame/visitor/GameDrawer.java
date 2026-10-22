@@ -36,7 +36,7 @@ public class GameDrawer implements IVisitor{
 
     @Override
     public void visit(AbstractMissile missile) {
-        drawGameObject(missile, MvcGameResources.MISSILE_RESOURCE);
+        drawGameObject(missile, missile.getMissileSkinType().getImagePath());
     }
 
     @Override 
