@@ -13,6 +13,9 @@ public class MvcGameKeys {
     public static final String POWER_UP_KEY = "F";
     public static final String POWER_DOWN_KEY = "D";
 
+
+    public static final String TOGGLE_EXPLOSIVE_SHOT = "E";
+
     
     public static final String TOGGLE_MOVING_STRATEGY_KEY = "M";
     public static final String TOGGLE_SHOOTING_MODE_KEY = "N";

@@ -31,5 +31,5 @@ public class MvcGameConfig {
     public static final int MAGIC_TIME_CONST = 100;
 
     public static final int EXPLOSION_RADIUS = 120;
-
+    public static final int EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT = 3;
 }
