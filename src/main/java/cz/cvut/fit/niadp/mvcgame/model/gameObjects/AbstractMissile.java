@@ -48,7 +48,7 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     public void move(){
         movingStrategy.updatePosition(this);
     }
-
+    
     public void moveFromStart(Position displacement) {
         position.setX(initialPosition.getX() + displacement.getX());
         position.setY(initialPosition.getY() + displacement.getY());
