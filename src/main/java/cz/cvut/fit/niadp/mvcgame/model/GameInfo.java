@@ -16,6 +16,7 @@ public class GameInfo implements IVisitable
     }
 
     private int score;
+    private int explosiveShotsLeft;
     private AbstractCannon cannon;
     private IMovingStrategy strategy;
 
@@ -33,6 +34,14 @@ public class GameInfo implements IVisitable
 
     public int getScore(){
         return score;
+    }
+
+    public int getExplosiveShotsLeft() {
+        return explosiveShotsLeft;
+    }
+
+    public void setExplosiveShotsLeft(int explosiveShotsLeft) {
+        this.explosiveShotsLeft = explosiveShotsLeft;
     }
 
     public Object createMemento() {

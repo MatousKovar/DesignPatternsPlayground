@@ -48,6 +48,8 @@ public class GameModel implements IGameModel{
     protected final Stack<AbstractGameCommand> executedCommands;
     protected int score;
     private GameInfo gameInfo;
+    private boolean explosiveShotEnabled;
+    private int remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
 
     public GameModel(){
         factory = new GameObjectsFactoryA(this);
@@ -59,6 +61,7 @@ public class GameModel implements IGameModel{
         impactAnimations = new HashSet<>();
         movingStrategy = new RealMovingStrategy();
         gameInfo = new GameInfo(cannon,movingStrategy);
+        gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         unexecutedCommands = new LinkedBlockingQueue<>();
         executedCommands = new Stack<>();
     }
@@ -210,6 +213,8 @@ public class GameModel implements IGameModel{
     @Override
     public void loadLevel(Level level) {
         this.level = Objects.requireNonNull(level, "Level must not be null");
+        remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
+        gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         enemies.clear();
         long now = currentTimeNanos();
         level.start(now);
@@ -317,6 +322,17 @@ public class GameModel implements IGameModel{
         notifyObservers();
     }
 
+    @Override
+    public void toggleExplosiveShot() {
+        explosiveShotEnabled = !explosiveShotEnabled;
+        notifyObservers();
+    }
+
+    @Override
+    public boolean isExplosiveShotEnabled() {
+        return explosiveShotEnabled;
+    }
+
     private record Memento(
         Object cannonMemento,
         Map<AbstractMissile, Object> missiles,
@@ -326,6 +342,7 @@ public class GameModel implements IGameModel{
         IMovingStrategy movingStrategy,
         Map<IMovingStrategy, Object> strategyMementos,
         List<AbstractGameCommand> commandHistory,
+        boolean explosiveShotEnabled,
         Level level,
         Object levelMemento
     ) {}
@@ -349,6 +366,7 @@ public class GameModel implements IGameModel{
             movingStrategy,
             Collections.unmodifiableMap(strategies),
             List.copyOf(executedCommands),
+            explosiveShotEnabled,
             level,
             levelMemento
         );
@@ -356,6 +374,7 @@ public class GameModel implements IGameModel{
 
     public void setMemento(Object memento){
         Memento snapshot = (Memento) memento;
+        explosiveShotEnabled = snapshot.explosiveShotEnabled();
         level = snapshot.level();
         level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());
         cannon.restoreMemento(snapshot.cannonMemento());

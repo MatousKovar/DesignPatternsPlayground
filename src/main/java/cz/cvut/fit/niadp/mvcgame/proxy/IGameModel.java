@@ -36,6 +36,8 @@ public interface IGameModel extends IObservable {
     public IMovingStrategy getNextMovingStrategy(RandomMovingStrategy strategy);
     public IMovingStrategy getNextMovingStrategy(RealMovingStrategy strategy);
     public void toggleShootingMode();
+    public void toggleExplosiveShot();
+    public boolean isExplosiveShotEnabled();
     public Object createMemento();
     public void setMemento(Object memento);
     public void registerCommand(AbstractGameCommand command);

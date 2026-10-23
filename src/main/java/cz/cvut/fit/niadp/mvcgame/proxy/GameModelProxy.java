@@ -140,6 +140,16 @@ public class GameModelProxy implements IGameModel{
     }
 
     @Override
+    public void toggleExplosiveShot() {
+        subject.toggleExplosiveShot();
+    }
+
+    @Override
+    public boolean isExplosiveShotEnabled() {
+        return subject.isExplosiveShotEnabled();
+    }
+
+    @Override
     public Object createMemento() {
        return subject.createMemento();
     }

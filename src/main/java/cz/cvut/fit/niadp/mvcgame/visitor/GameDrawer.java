@@ -13,7 +13,7 @@ import cz.cvut.fit.niadp.mvcgame.model.gameObjects.GameObject;
 
 public class GameDrawer implements IVisitor{
     private static final int GAME_INFO_WIDTH = 300;
-    private static final int GAME_INFO_HEIGHT = 150;
+    private static final int GAME_INFO_HEIGHT = 172;
     private static final int GAME_INFO_MARGIN = 20;
     private static final int GAME_INFO_TEXT_PADDING = 12;
     private static final int GAME_INFO_LINE_HEIGHT = 22;
@@ -80,6 +80,10 @@ public class GameDrawer implements IVisitor{
         gameGraphics.drawText(
             "Shooting mode: " + info.getShootingMode(),
             new Position(textX, textY + 4 * GAME_INFO_LINE_HEIGHT)
+        );
+        gameGraphics.drawText(
+            "Explosive shots left: " + info.getExplosiveShotsLeft(),
+            new Position(textX, textY + 5 * GAME_INFO_LINE_HEIGHT)
         );
     }
 
