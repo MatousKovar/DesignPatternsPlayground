@@ -200,7 +200,14 @@ public class GameModel implements IGameModel{
     }
 
     public void cannonShoot(){
-        missiles.addAll(cannon.shoot());
+        for (AbstractMissile missile : cannon.shoot()) {
+            if (explosiveShotEnabled && remainingExplosiveShots > 0) {
+                missile = factory.createExplosiveMissile(missile);
+                remainingExplosiveShots--;
+            }
+            missiles.add(missile);
+        }
+        gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         notifyObservers();
     }
 
@@ -343,6 +350,7 @@ public class GameModel implements IGameModel{
         Map<IMovingStrategy, Object> strategyMementos,
         List<AbstractGameCommand> commandHistory,
         boolean explosiveShotEnabled,
+        int remainingExplosiveShots,
         Level level,
         Object levelMemento
     ) {}
@@ -367,6 +375,7 @@ public class GameModel implements IGameModel{
             Collections.unmodifiableMap(strategies),
             List.copyOf(executedCommands),
             explosiveShotEnabled,
+            remainingExplosiveShots,
             level,
             levelMemento
         );
@@ -375,6 +384,7 @@ public class GameModel implements IGameModel{
     public void setMemento(Object memento){
         Memento snapshot = (Memento) memento;
         explosiveShotEnabled = snapshot.explosiveShotEnabled();
+        remainingExplosiveShots = snapshot.remainingExplosiveShots();
         level = snapshot.level();
         level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());
         cannon.restoreMemento(snapshot.cannonMemento());
@@ -383,6 +393,7 @@ public class GameModel implements IGameModel{
         restoreObjects(impactAnimations, snapshot.impacts());
         snapshot.strategyMementos().forEach(IMovingStrategy::restoreMemento);
         gameInfo.restoreMemento(snapshot.gameInfoMemento());
+        gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         movingStrategy = snapshot.movingStrategy();
         gameInfo.setMovingStrategy(movingStrategy);
         executedCommands.clear();

@@ -10,6 +10,7 @@ import cz.cvut.fit.niadp.mvcgame.command.CannonShootCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonDownCommand;
 import cz.cvut.fit.niadp.mvcgame.command.MoveCannonUpCommand;
 import cz.cvut.fit.niadp.mvcgame.command.ToggleShootingModeCommand;
+import cz.cvut.fit.niadp.mvcgame.command.ToggleExplosiveShotCommand;
 import cz.cvut.fit.niadp.mvcgame.command.ToggleMovingStrategyCommand;
 import cz.cvut.fit.niadp.mvcgame.command.SpawnEnemyCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameKeys;
@@ -55,6 +56,9 @@ public class GameController {
                     break;
                 case MvcGameKeys.TOGGLE_SHOOTING_MODE_KEY:
                     model.registerCommand(new ToggleShootingModeCommand(model));
+                    break;
+                case MvcGameKeys.TOGGLE_EXPLOSIVE_SHOT:
+                    model.registerCommand(new ToggleExplosiveShotCommand(model));
                     break;
                 case MvcGameKeys.SPAWN_ENEMY_KEY:
                     model.registerCommand(new SpawnEnemyCommand(model));

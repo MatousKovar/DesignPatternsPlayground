@@ -9,6 +9,7 @@ import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 public interface IGameObjectsFactory {
     public AbstractCannon createCannon();
     public AbstractMissile createMissile(double initAngle, int initVelocity);
+    public AbstractMissile createExplosiveMissile(AbstractMissile missile);
     public AbstractEnemy createEnemy(Position position);
     AbstractImpactObject createImpact(Position position, int width, int height);
 }

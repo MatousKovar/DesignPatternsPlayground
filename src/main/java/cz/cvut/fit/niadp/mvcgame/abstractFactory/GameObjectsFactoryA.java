@@ -1,8 +1,10 @@
 package cz.cvut.fit.niadp.mvcgame.abstractFactory;
 
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
+import cz.cvut.fit.niadp.mvcgame.decorator.ExplosiveMissileDecorator;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractImpactObject;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.CannonA;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.EnemyA;
@@ -35,6 +37,11 @@ public class GameObjectsFactoryA implements IGameObjectsFactory{
             model.getMovingStrategy(),
             MissileSkinType.FIRST
         );
+    }
+
+    @Override
+    public AbstractMissile createExplosiveMissile(AbstractMissile missile) {
+        return new ExplosiveMissileDecorator(missile);
     }
 
     @Override
