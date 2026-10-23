@@ -25,6 +25,22 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     }
 
     @Override
+    public void drawRotatedImage(String path, Position position, double angleDegrees) {
+        Image image = getImage(path);
+        graphicsContext.save();
+        try {
+            graphicsContext.translate(
+                position.getX() + image.getWidth() / 2,
+                position.getY() + image.getHeight() / 2
+            );
+            graphicsContext.rotate(angleDegrees);
+            graphicsContext.drawImage(image, -image.getWidth() / 2, -image.getHeight() / 2);
+        } finally {
+            graphicsContext.restore();
+        }
+    }
+
+    @Override
     public void drawImageAtHeight(String path, Position position, int destinationHeight) {
         Image image = getImage(path);
         double aspectRatio = image.getWidth() / image.getHeight();

@@ -4,6 +4,7 @@ import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
 import cz.cvut.fit.niadp.mvcgame.controller.GameController;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
 import cz.cvut.fit.niadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.niadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.niadp.mvcgame.visitor.GameDrawer;
@@ -41,8 +42,26 @@ public class GameView implements IObserver, IView{
                 gameGraphics.drawCircle(center, TRAJECTORY_DOT_RADIUS);
             }
             model.getGameObjects().forEach(gameObject -> gameObject.accept(gameDrawer));
+            renderLoadedMissile();
             model.getGameInfo().accept(gameDrawer);
         }
+    }
+
+    private void renderLoadedMissile() {
+        MissileSkinType skin = MissileSkinType.FIRST;
+        if (model.isExplosiveShotEnabled() && model.getGameInfo().getExplosiveShotsLeft() > 0) {
+            skin = MissileSkinType.EXPLOSIVE;
+        }
+
+        Position cannonPosition = model.getCannonPosition();
+        ImageSize cannonSize = gameGraphics.getImageSize(MvcGameResources.CANNON_RESOURCE);
+        ImageSize missileSize = gameGraphics.getImageSize(skin.getImagePath());
+        Position loadedPosition = new Position(
+            (int) Math.round(cannonPosition.getX() + (cannonSize.width() - missileSize.width()) / 2),
+            (int) Math.round(cannonPosition.getY() - missileSize.height() / 2)
+        );
+        double angleDegrees = Math.toDegrees(model.getGameInfo().getCannonAngle());
+        gameGraphics.drawRotatedImage(skin.getImagePath(), loadedPosition, angleDegrees);
     }
 
     public void setGraphicsContext(IGameGraphics gameGraphics){

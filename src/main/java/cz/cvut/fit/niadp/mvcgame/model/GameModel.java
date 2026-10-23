@@ -220,6 +220,7 @@ public class GameModel implements IGameModel{
     @Override
     public void loadLevel(Level level) {
         this.level = Objects.requireNonNull(level, "Level must not be null");
+        explosiveShotEnabled = false;
         remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
         gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         enemies.clear();

@@ -4,6 +4,7 @@ import cz.cvut.fit.niadp.mvcgame.model.Position;
 
 public interface IGameGraphics {
     void drawImage(String path, Position position);
+    void drawRotatedImage(String path, Position position, double angleDegrees);
     void drawImageAtHeight(String path, Position position, int destinationHeight);
     ImageSize getImageSize(String path);
 

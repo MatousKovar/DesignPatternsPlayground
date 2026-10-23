@@ -16,6 +16,11 @@ public class GameGraphics implements IGameGraphics {
     }
 
     @Override
+    public void drawRotatedImage(String path, Position position, double angleDegrees) {
+        implementor.drawRotatedImage(path, position, angleDegrees);
+    }
+
+    @Override
     public void drawImageAtHeight(String path, Position position, int destinationHeight) {
         implementor.drawImageAtHeight(path, position, destinationHeight);
     }
