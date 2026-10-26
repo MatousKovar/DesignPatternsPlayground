@@ -46,11 +46,10 @@ public class LevelBuilder {
 
     private void placeEnemy(AbstractEnemy enemy, List<EnemySpawn> spawns, ThreadLocalRandom random) {
         Hitbox hitbox = enemy.getHitbox();
-        int width = hitbox.getWidth();
         int height = hitbox.getHeight();
 
         for (int attempt = 0; attempt < MAX_PLACEMENT_ATTEMPTS; attempt++) {
-            int x = random.nextInt(minX, maxX - width + 1);
+            int x = MvcGameConfig.MAX_X;
             int y = random.nextInt(minY, maxY - height + 1);
             enemy.getPosition().setX(x);
             enemy.getPosition().setY(y);

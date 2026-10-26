@@ -54,12 +54,7 @@ public class GameView implements IObserver, IView{
         }
 
         Position cannonPosition = model.getCannonPosition();
-        ImageSize cannonSize = gameGraphics.getImageSize(MvcGameResources.CANNON_RESOURCE);
-        ImageSize missileSize = gameGraphics.getImageSize(skin.getImagePath());
-        Position loadedPosition = new Position(
-            (int) Math.round(cannonPosition.getX() + (cannonSize.width() - missileSize.width()) / 2),
-            (int) Math.round(cannonPosition.getY() - missileSize.height() / 2)
-        );
+        Position loadedPosition = new Position(cannonPosition.getX(),cannonPosition.getY());
         double angleDegrees = Math.toDegrees(model.getGameInfo().getCannonAngle());
         gameGraphics.drawRotatedImage(skin.getImagePath(), loadedPosition, angleDegrees);
     }
