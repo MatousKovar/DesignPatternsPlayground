@@ -4,6 +4,7 @@ import cz.cvut.fit.niadp.mvcgame.visitor.IVisitor;
 
 import java.util.Set;
 
+import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.strategy.IMovingStrategy;
 
@@ -48,7 +49,7 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     public void move(){
         movingStrategy.updatePosition(this);
     }
-    
+
     public void moveFromStart(Position displacement) {
         position.setX(initialPosition.getX() + displacement.getX());
         position.setY(initialPosition.getY() + displacement.getY());
@@ -59,4 +60,8 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
     };
 
     public abstract Set<AbstractEnemy> getAffectedEnemies(AbstractEnemy hitEnemy,Set<AbstractEnemy> enemies);
+
+    public AbstractImpactObject createImpact(IGameObjectsFactory factory, AbstractEnemy hitEnemy){
+        return factory.createImpact(hitEnemy.getPosition(), hitEnemy.getHitbox().getWidth(),hitEnemy.getHitbox().getHeight());
+    };
 }

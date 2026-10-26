@@ -3,8 +3,11 @@ package cz.cvut.fit.niadp.mvcgame.decorator;
 import java.util.HashSet;
 import java.util.Set;
 
+import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
+import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractImpactObject;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractMissile;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
@@ -40,5 +43,18 @@ public class ExplosiveMissileDecorator extends MissileDecorator{
         return Math.hypot(centerAX - centerBX, centerAY - centerBY);
     }
 
+    @Override
+    public AbstractImpactObject createImpact(IGameObjectsFactory factory, AbstractEnemy hitEnemy) {
+        int diameter  = 2 * MvcGameConfig.EXPLOSION_RADIUS;
+        int radius = MvcGameConfig.EXPLOSION_RADIUS;
+        
+        double centerX = hitbox.getX() + hitbox.getWidth() / 2.0;
+        double centerY = hitbox.getY() + hitbox.getHeight() / 2.0;
+
+        Position impactPositinon = new Position((int) Math.round(centerX - radius), (int) Math.round(centerY - radius));
+
+        return factory.createImpact(impactPositinon, diameter, diameter);
+    }
+    
     
 }

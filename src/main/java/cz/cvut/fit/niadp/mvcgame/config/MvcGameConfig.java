@@ -15,9 +15,9 @@ public class MvcGameConfig {
     public static final int CANNON_POS_X = 50;
     public static final int CANNON_POS_Y = MAX_Y / 2;
 
-    public static final int DEFAULT_ENEMY_COUNT = 5;
-    public static final double ENEMY_MOVE_SPEED = 40.0;
-    public static final long ENEMY_SPAWN_INTERVAL_MILLIS = 1_000;
+    public static final int DEFAULT_ENEMY_COUNT = 15;
+    public static final double ENEMY_MOVE_SPEED = 60.0;
+    public static final long ENEMY_SPAWN_INTERVAL_MILLIS = 3_000;
     public static final int ENEMY_SPAWN_MIN_X = 600;
     public static final int ENEMY_SPAWN_MIN_Y = 150;
     public static final int ENEMY_SPAWN_MAX_X = 1300;
