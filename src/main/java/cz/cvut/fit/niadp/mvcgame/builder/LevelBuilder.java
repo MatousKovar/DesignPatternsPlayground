@@ -31,20 +31,20 @@ public class LevelBuilder {
         return this;
     }
 
-    //todo v budoucnu se tady x  da MAX_X!
+    
     public Level build() {
         List<EnemySpawn> spawns = new ArrayList<>(enemyCount);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         for (int i = 0; i < enemyCount; i++) {
             AbstractEnemy enemy = factory.createEnemy(new Position(minX, minY));
-            placeEnemy(enemy, spawns, random);
             long spawnTimeMillis = i * MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS;
+            placeEnemy(enemy, spawnTimeMillis, spawns, random);
             spawns.add(new EnemySpawn(enemy, spawnTimeMillis));
         }
         return new Level(spawns);
     }
 
-    private void placeEnemy(AbstractEnemy enemy, List<EnemySpawn> spawns, ThreadLocalRandom random) {
+    private void placeEnemy(AbstractEnemy enemy, long spawnTimeMillis, List<EnemySpawn> spawns, ThreadLocalRandom random) {
         Hitbox hitbox = enemy.getHitbox();
         int height = hitbox.getHeight();
 
@@ -53,7 +53,7 @@ public class LevelBuilder {
             int y = random.nextInt(minY, maxY - height + 1);
             enemy.getPosition().setX(x);
             enemy.getPosition().setY(y);
-            if (!overlapsExistingEnemy(enemy, spawns)) {
+            if (!overlapsExistingEnemy(enemy, spawnTimeMillis, spawns)) {
                 return;
             }
         }
@@ -63,9 +63,20 @@ public class LevelBuilder {
         );
     }
 
-    private boolean overlapsExistingEnemy(AbstractEnemy enemy, List<EnemySpawn> spawns) {
+    private boolean overlapsExistingEnemy(AbstractEnemy enemy, long spawnTimeMillis, List<EnemySpawn> spawns) {
         for (EnemySpawn spawn : spawns) {
-            if (enemy.getHitbox().overlaps(spawn.enemy().getHitbox())) {
+            double elapsedSeconds = (spawnTimeMillis - spawn.spawnTimeMillis()) / 1_000.0;
+            Hitbox existingHitbox = spawn.enemy().getHitbox();
+            Position predictedPosition = spawn.enemy().positionAtTime(
+                MvcGameConfig.ENEMY_MOVE_SPEED, elapsedSeconds
+            );
+            Hitbox predictedHitbox = new Hitbox(
+                predictedPosition,
+                existingHitbox.getWidth(),
+                existingHitbox.getHeight()
+            );
+
+            if (enemy.getHitbox().overlaps(predictedHitbox)) {
                 return true;
             }
         }

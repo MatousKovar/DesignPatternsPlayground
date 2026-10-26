@@ -46,9 +46,21 @@ public abstract class AbstractEnemy extends GameObject {
             initialPosition = new Position(position.getX(), position.getY());
         }
 
-        Position nextPosition = movingStrategy.calculatePosition(initialPosition, speed, elapsedSeconds);
+        Position nextPosition = positionAtTime(speed, elapsedSeconds);
         position.setX(nextPosition.getX());
         position.setY(nextPosition.getY());
+    }
+
+    public Position positionAtTime(double speed, double elapsedSeconds) {
+        if (movingStrategy == null) {
+            return copyPosition(position);
+        }
+
+        Position origin = initialPosition;
+        if (origin == null) {
+            origin = position;
+        }
+        return movingStrategy.calculatePosition(copyPosition(origin), speed, elapsedSeconds);
     }
 
     @Override
