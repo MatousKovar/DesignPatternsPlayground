@@ -14,9 +14,11 @@ public class GameEndView extends AbstractButtonView{
 
     private static final double BUTTON_HEIGHT_RATIO = 0.25;
     private static final int BUTTON_MARGIN = 10;
+    private static final int RESULT_TEXT_MARGIN = 30;
     private final ImageButton replayButton;
     private final ImageButton quitButton;
     private final IGameGraphics gameGraphics;
+    private boolean win;
 
     public GameEndView(IGameGraphics graphics){
         this.gameGraphics = graphics;
@@ -43,8 +45,25 @@ public class GameEndView extends AbstractButtonView{
 
     @Override
     public void render() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'render'");
+        gameGraphics.clear();
+        gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0, 0));
+
+        String resultText = "You lost";
+        if (win) {
+            resultText = "You won";
+        }
+
+        Position buttonPosition = replayButton.getPosition();
+        Position textPosition = new Position(
+            buttonPosition.getX(),
+            buttonPosition.getY() - RESULT_TEXT_MARGIN
+        );
+        gameGraphics.drawText(resultText, textPosition);
+        renderButtons();
+    }
+
+    public void setWin(boolean win) {
+        this.win = win;
     }
 
     public void setCommands(IButtonCommand restart, IButtonCommand quit){

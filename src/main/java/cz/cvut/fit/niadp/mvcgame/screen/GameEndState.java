@@ -19,6 +19,7 @@ public class GameEndState implements IAppState {
     }
     public void setWin(boolean win) {
         this.win = win;
+        view.setWin(win);
     }
 
     public boolean isWin() {
