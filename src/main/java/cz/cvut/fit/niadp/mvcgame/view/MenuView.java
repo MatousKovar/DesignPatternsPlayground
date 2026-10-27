@@ -1,14 +1,12 @@
 package cz.cvut.fit.niadp.mvcgame.view;
 
-import java.util.List;
-
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 
-public class MenuView implements IView{
+public class MenuView extends AbstractButtonView{
     public enum MenuAction {
         NONE, PLAY, QUIT
     }
@@ -17,7 +15,6 @@ public class MenuView implements IView{
     private static final int BUTTON_MARGIN = 10;
     private final ImageButton playButton;
     private final ImageButton quitButton;
-    private final List<ImageButton> buttons;
 
     private final IGameGraphics gameGraphics;
 
@@ -40,44 +37,19 @@ public class MenuView implements IView{
             new Position(middleX, firstButtonY + buttonHeight + BUTTON_MARGIN + buttonHeight / 2),
             buttonHeight
         );
-        this.buttons = List.of(playButton, quitButton);
+        registerButton(playButton);
+        registerButton(quitButton);
     }
 
     public void render(){
         this.gameGraphics.clear();
         gameGraphics.drawImage(MvcGameResources.BACKGROUND_IMAGE, new Position(0,0));
-        for (ImageButton button : buttons) {
-            button.render();
-        }
-    }
-
-    public void processMouseMove(double x, double y){
-        for (ImageButton button : buttons) {
-            button.processMouseMove(x, y);
-        }
-    }
-
-    public void processMousePress(double x, double y) {
-        for (ImageButton button : buttons) {
-            button.processMousePress(x, y);
-        }
+        renderButtons();
     }
 
     public void setCommands(IButtonCommand playCommand, IButtonCommand quitCommand){
         playButton.setCommand(playCommand);
         quitButton.setCommand(quitCommand);
-    }
-
-    public void processMouseRelease(double x, double y) {
-        for (ImageButton button : buttons){
-            button.processMouseRelease(x,y);
-        }
-    }
-
-    public void resetInteraction() {
-        for (ImageButton button : buttons) {
-            button.resetInteraction();
-        }
     }
 
 }

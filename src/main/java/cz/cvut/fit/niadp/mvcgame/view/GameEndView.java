@@ -1,16 +1,12 @@
 package cz.cvut.fit.niadp.mvcgame.view;
 
-import java.util.List;
-
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
-import cz.cvut.fit.niadp.mvcgame.command.QuitButtonCommand;
-import cz.cvut.fit.niadp.mvcgame.command.RestartButtonCommand;
+import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
-import cz.cvut.fit.niadp.mvcgame.view.ImageButton;
 
-public class GameEndView implements IView{
+public class GameEndView extends AbstractButtonView{
 
     public enum MenuAction {
         NONE, REPLAY, QUIT
@@ -20,7 +16,6 @@ public class GameEndView implements IView{
     private static final int BUTTON_MARGIN = 10;
     private final ImageButton replayButton;
     private final ImageButton quitButton;
-    private final List<ImageButton> buttons;
     private final IGameGraphics gameGraphics;
 
     public GameEndView(IGameGraphics graphics){
@@ -42,7 +37,8 @@ public class GameEndView implements IView{
             new Position(middleX, firstButtonY + buttonHeight + BUTTON_MARGIN + buttonHeight / 2),
             buttonHeight
         );
-        this.buttons = List.of(replayButton, quitButton);
+        registerButton(replayButton);
+        registerButton(quitButton);
     }
 
     @Override
@@ -51,9 +47,9 @@ public class GameEndView implements IView{
         throw new UnsupportedOperationException("Unimplemented method 'render'");
     }
 
-    public void setCommands(RestartButtonCommand restart, QuitButtonCommand quit){
+    public void setCommands(IButtonCommand restart, IButtonCommand quit){
         this.replayButton.setCommand(restart);
         this.quitButton.setCommand(quit);
     }
-    
+
 }

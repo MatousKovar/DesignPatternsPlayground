@@ -40,22 +40,22 @@ public class GameEndState implements IAppState {
 
     @Override
     public void processMouseMove(double x, double y) {
-        // TODO: Forward mouse movement to the view.
+        view.processMouseMove(x, y);
     }
 
     @Override
     public void processMousePress(double x, double y) {
-        // TODO: Forward mouse presses to the view.
+        view.processMousePress(x, y);
     }
 
     @Override
     public void processMouseRelease(double x, double y) {
-        
+        view.processMouseRelease(x, y);
     }
 
     @Override
     public void resetMouseInteraction() {
-
+        view.resetInteraction();
     }
 
     @Override
