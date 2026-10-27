@@ -16,6 +16,7 @@ import cz.cvut.fit.niadp.mvcgame.bridge.GameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.bridge.JavaFxGraphics;
 import cz.cvut.fit.niadp.mvcgame.screen.AppStateManager;
+import cz.cvut.fit.niadp.mvcgame.screen.GameEndState;
 import cz.cvut.fit.niadp.mvcgame.screen.GameState;
 import cz.cvut.fit.niadp.mvcgame.screen.MenuState;
 import cz.cvut.fit.niadp.mvcgame.screen.PauseState;
@@ -43,7 +44,7 @@ public class MvcGameJavaFxLauncher extends Application {
         root.getChildren().add( canvas );
         GraphicsContext gc = canvas.getGraphicsContext2D();
         IGameGraphics gameGraphics = new GameGraphics(new JavaFxGraphics(gc));
-        AppStateManager appStateManager = new AppStateManager(new MenuState(gameGraphics, theMvcGame),new GameState(theMvcGame), new PauseState(gameGraphics)); // Init page states
+        AppStateManager appStateManager = new AppStateManager(new MenuState(gameGraphics, theMvcGame),new GameState(theMvcGame), new PauseState(gameGraphics), new GameEndState(gameGraphics)); // Init page states
         ArrayList<String> pressedKeysCodes = new ArrayList<>();
         //register event handlers in JavaFX
         theScene.setOnKeyPressed(

@@ -7,13 +7,15 @@ public class AppStateManager{
     private final IAppState menuState;
     private final IAppState gameState;
     private final IAppState pauseState;
+    private final GameEndState endGameState;
     private IAppState currentState;
 
-    public AppStateManager(MenuState menuState, GameState gameState, PauseState pauseState){
+    public AppStateManager(MenuState menuState, GameState gameState, PauseState pauseState, GameEndState endGameState){
         this.currentState = menuState;
         this.gameState = gameState;
         this.pauseState = pauseState;
         this.menuState = menuState;
+        this.endGameState = endGameState;
         initCommands();
     }
 
@@ -63,6 +65,13 @@ public class AppStateManager{
     public void setMenuState(){
         currentState.resetMouseInteraction();
         this.currentState = menuState;
+        this.render();
+    }
+
+    public void setGameEndState(boolean win){
+        currentState.resetMouseInteraction();
+        currentState = endGameState;
+        endGameState.setWin(win);
         this.render();
     }
 
