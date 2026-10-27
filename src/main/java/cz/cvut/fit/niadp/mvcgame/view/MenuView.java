@@ -3,7 +3,6 @@ package cz.cvut.fit.niadp.mvcgame.view;
 import java.util.List;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
-import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
 import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
@@ -24,19 +23,22 @@ public class MenuView implements IView{
 
     public MenuView(IGameGraphics gameGraphics){
         this.gameGraphics = gameGraphics;
+        ImageButtonFactory buttonFactory = new ImageButtonFactory(gameGraphics);
         int middleX = MvcGameConfig.MAX_X / 2;
         int middleY = MvcGameConfig.MAX_Y / 2;
         int buttonHeight = (int) Math.round(MvcGameConfig.MAX_Y * BUTTON_HEIGHT_RATIO);
         int buttonGroupHeight = buttonHeight * 2 + BUTTON_MARGIN;
         int firstButtonY = middleY - buttonGroupHeight / 2;
 
-        this.playButton = createButton(
+        this.playButton = buttonFactory.create(
             MvcGameResources.MENU_IMAGE,
-            new Position(middleX, firstButtonY + buttonHeight / 2)
+            new Position(middleX, firstButtonY + buttonHeight / 2),
+            buttonHeight
         );
-        this.quitButton = createButton(
+        this.quitButton = buttonFactory.create(
             MvcGameResources.QUIT_IMAGE,
-            new Position(middleX, firstButtonY + buttonHeight + BUTTON_MARGIN + buttonHeight / 2)
+            new Position(middleX, firstButtonY + buttonHeight + BUTTON_MARGIN + buttonHeight / 2),
+            buttonHeight
         );
         this.buttons = List.of(playButton, quitButton);
     }
@@ -78,16 +80,4 @@ public class MenuView implements IView{
         }
     }
 
-    private Position centerImage(int trueMiddleX, int trueMiddleY, ImageSize imageSize){
-        int finalX = (int) Math.round(trueMiddleX - imageSize.width() / 2);
-        int finalY = (int) Math.round(trueMiddleY - imageSize.height() / 2);
-        return new Position(finalX, finalY);
-    }
-
-    private ImageButton createButton(String imagePath, Position centerPosition){
-        int buttonHeight = (int) Math.round(MvcGameConfig.MAX_Y * BUTTON_HEIGHT_RATIO);
-        ImageSize buttonSize = gameGraphics.getImageSize(imagePath, buttonHeight);
-        Position position = centerImage(centerPosition.getX(), centerPosition.getY(), buttonSize);
-        return new ImageButton(gameGraphics, imagePath, position, buttonHeight);
-    }
 }
