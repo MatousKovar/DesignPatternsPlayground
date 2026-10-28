@@ -14,7 +14,9 @@ public class GameState implements IAppState{
     public void processPressedKeys(List<String> keys, AppStateManager navigator) {
         mvcGame.processPressedKeys(keys);
         if (mvcGame.hasEnemyEscaped()) {
-            navigator.setMenuState();
+            navigator.setGameEndState(false);
+        } else if (mvcGame.hasWon()) {
+            navigator.setGameEndState(true);
         }
     }
 

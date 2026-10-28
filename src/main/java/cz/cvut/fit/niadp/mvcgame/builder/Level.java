@@ -23,6 +23,10 @@ public class Level {
         return enemySpawns;
     }
 
+    public boolean hasFinishedSpawning() {
+        return startedAtNanos != null && pendingSpawns.isEmpty();
+    }
+
     public void start(long nowNanos) {
         startedAtNanos = nowNanos;
         pendingSpawns.clear();

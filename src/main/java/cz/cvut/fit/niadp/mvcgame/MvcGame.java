@@ -35,6 +35,10 @@ public class MvcGame {
         return model.hasEnemyEscaped();
     }
 
+    public boolean hasWon() {
+        return model.hasWon();
+    }
+
     public String getWindowTitle() {
         return "The NI-ADP MvcGame";
     }

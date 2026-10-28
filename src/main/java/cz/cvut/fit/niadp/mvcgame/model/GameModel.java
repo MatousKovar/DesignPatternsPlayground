@@ -181,6 +181,11 @@ public class GameModel implements IGameModel{
         );
     }
 
+    @Override
+    public boolean hasWon() {
+        return level.hasFinishedSpawning() && enemies.isEmpty();
+    }
+
     public Position getCannonPosition(){
         return cannon.getPosition();
     }

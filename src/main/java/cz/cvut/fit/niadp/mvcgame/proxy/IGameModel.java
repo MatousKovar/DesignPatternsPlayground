@@ -18,6 +18,7 @@ import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 public interface IGameModel extends IObservable {
     public void update();
     public boolean hasEnemyEscaped();
+    public boolean hasWon();
     public Position getCannonPosition();
     public List<Position> getTrajectoryPreview();
     public void moveCannonUp();
