@@ -37,7 +37,10 @@ This project is a semestral work for NI-ADP subject about architecture and desig
 - As explained in the Decorator design pattern - toggled using E. Limit 3 per round
 
 ## Preview of shot trajectory
+- cannon accepts MovingStrategy and returns list of points that show where the missile will fly
 
+## Random generated levels
+- When game starts the levels are unique each time.
 
 ## Added game features
 
