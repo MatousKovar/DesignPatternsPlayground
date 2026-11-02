@@ -5,6 +5,7 @@ import java.util.Set;
 
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.builder.Level;
+import cz.cvut.fit.niadp.mvcgame.builder.Difficulty;
 import cz.cvut.fit.niadp.mvcgame.model.GameModel;
 import cz.cvut.fit.niadp.mvcgame.model.GameInfo;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
@@ -177,6 +178,16 @@ public class GameModelProxy implements IGameModel{
     @Override
     public void generateLevel() {
         subject.generateLevel();
+    }
+
+    @Override
+    public void generateLevel(Difficulty difficulty) {
+        subject.generateLevel(difficulty);
+    }
+
+    @Override
+    public Difficulty getDifficulty() {
+        return subject.getDifficulty();
     }
 
     @Override

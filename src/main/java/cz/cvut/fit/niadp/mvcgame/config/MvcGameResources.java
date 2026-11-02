@@ -15,6 +15,9 @@ public class MvcGameResources {
     public static final String PAUSE_IMAGE = "images/pause.png";
     public static final String PLAY_IMAGE = "images/play.png";
     public static final String EXPLOSIVE_MISSILE_IMAGE = "images/missile_explosive.png";
+    public static final String DIFFICULTY_EASY_IMAGE = "images/difficulty_easy.png";
+    public static final String DIFFICULTY_MEDIUM_IMAGE = "images/difficulty_medium.png";
+    public static final String DIFFICULTY_HARD_IMAGE = "images/difficulty_hard.png";
 
 
 

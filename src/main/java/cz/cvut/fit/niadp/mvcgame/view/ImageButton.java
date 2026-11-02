@@ -12,7 +12,7 @@ public class ImageButton {
     private static final double PRESSED_SCALE = 0.96;
 
     private final IGameGraphics graphics;
-    private final String imagePath;
+    private String imagePath;
     private IButtonCommand command;
     private Position position;
     private ImageSize size;
@@ -105,6 +105,13 @@ public class ImageButton {
         this.height = height;
         this.size = newSize;
         resetInteraction();
+    }
+
+    public void setImagePath(String imagePath) {
+        Objects.requireNonNull(imagePath, "Image path must not be null");
+        ImageSize newSize = graphics.getImageSize(imagePath, height);
+        this.imagePath = imagePath;
+        this.size = newSize;
     }
 
     public void setCommand(IButtonCommand buttonCommand){

@@ -15,6 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.GameObjectsFactoryA;
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.builder.Level;
+import cz.cvut.fit.niadp.mvcgame.builder.Difficulty;
 import cz.cvut.fit.niadp.mvcgame.builder.LevelBuilder;
 import cz.cvut.fit.niadp.mvcgame.command.AbstractGameCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
@@ -37,6 +38,7 @@ public class GameModel implements IGameModel{
     private final Set<IObserver> observers;
     private final Set<AbstractEnemy> enemies;
     private Level level;
+    private Difficulty difficulty = Difficulty.MEDIUM;
     private final Set<AbstractImpactObject> impactAnimations;
     private IGameObjectsFactory factory;
     protected IMovingStrategy movingStrategy;
@@ -192,6 +194,17 @@ public class GameModel implements IGameModel{
     }
 
     @Override
+    public void generateLevel(Difficulty difficulty) {
+        this.difficulty = Objects.requireNonNull(difficulty, "Difficulty must not be null");
+        generateLevel();
+    }
+
+    @Override
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    @Override
     public void loadLevel(Level level) {
         this.level = Objects.requireNonNull(level, "Level must not be null");
         explosiveShotEnabled = false;
@@ -326,6 +339,7 @@ public class GameModel implements IGameModel{
         List<AbstractGameCommand> commandHistory,
         boolean explosiveShotEnabled,
         int remainingExplosiveShots,
+        Difficulty difficulty,
         Level level,
         Object levelMemento
     ) {}
@@ -354,6 +368,7 @@ public class GameModel implements IGameModel{
             List.copyOf(executedCommands),
             explosiveShotEnabled,
             remainingExplosiveShots,
+            difficulty,
             level,
             levelMemento
         );
@@ -363,6 +378,7 @@ public class GameModel implements IGameModel{
         Memento snapshot = (Memento) memento;
         explosiveShotEnabled = snapshot.explosiveShotEnabled();
         remainingExplosiveShots = snapshot.remainingExplosiveShots();
+        difficulty = snapshot.difficulty();
         level = snapshot.level();
         if (level != null) {
             level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());

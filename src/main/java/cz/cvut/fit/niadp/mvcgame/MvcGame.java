@@ -3,6 +3,7 @@ package cz.cvut.fit.niadp.mvcgame;
 import java.util.List;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.niadp.mvcgame.builder.Difficulty;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.controller.GameController;
 import cz.cvut.fit.niadp.mvcgame.memento.CareTaker;
@@ -29,6 +30,10 @@ public class MvcGame {
 
     public void generateLevel() {
         model.generateLevel();
+    }
+
+    public void generateLevel(Difficulty difficulty) {
+        model.generateLevel(difficulty);
     }
     public void restartGame(){
         model.restartGame();

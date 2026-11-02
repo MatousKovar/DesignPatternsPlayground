@@ -1,6 +1,8 @@
 package cz.cvut.fit.niadp.mvcgame.view;
 
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.niadp.mvcgame.bridge.ImageSize;
+import cz.cvut.fit.niadp.mvcgame.builder.Difficulty;
 import cz.cvut.fit.niadp.mvcgame.command.IButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameResources;
@@ -13,8 +15,11 @@ public class MenuView extends AbstractButtonView{
 
     private static final double BUTTON_HEIGHT_RATIO = 0.25;
     private static final int BUTTON_MARGIN = 10;
+    private static final int DIFFICULTY_BUTTON_HEIGHT = 160;
+    private static final int DIFFICULTY_BUTTON_MARGIN = 24;
     private final ImageButton playButton;
     private final ImageButton quitButton;
+    private final ImageButton difficultyButton;
 
     private final IGameGraphics gameGraphics;
 
@@ -39,6 +44,18 @@ public class MenuView extends AbstractButtonView{
         );
         registerButton(playButton);
         registerButton(quitButton);
+        ImageSize difficultySize = gameGraphics.getImageSize(
+            MvcGameResources.DIFFICULTY_MEDIUM_IMAGE, DIFFICULTY_BUTTON_HEIGHT
+        );
+        difficultyButton = buttonFactory.create(
+            MvcGameResources.DIFFICULTY_MEDIUM_IMAGE,
+            new Position(
+                (int) Math.round(DIFFICULTY_BUTTON_MARGIN + difficultySize.width() / 2),
+                MvcGameConfig.MAX_Y - DIFFICULTY_BUTTON_MARGIN - DIFFICULTY_BUTTON_HEIGHT / 2
+            ),
+            DIFFICULTY_BUTTON_HEIGHT
+        );
+        registerButton(difficultyButton);
     }
 
     public void render(){
@@ -47,9 +64,20 @@ public class MenuView extends AbstractButtonView{
         renderButtons();
     }
 
-    public void setCommands(IButtonCommand playCommand, IButtonCommand quitCommand){
+    public void setCommands(IButtonCommand playCommand, IButtonCommand quitCommand,
+            IButtonCommand nextDifficultyCommand){
         playButton.setCommand(playCommand);
         quitButton.setCommand(quitCommand);
+        difficultyButton.setCommand(nextDifficultyCommand);
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        String imagePath = switch (difficulty) {
+            case EASY -> MvcGameResources.DIFFICULTY_EASY_IMAGE;
+            case MEDIUM -> MvcGameResources.DIFFICULTY_MEDIUM_IMAGE;
+            case HARD -> MvcGameResources.DIFFICULTY_HARD_IMAGE;
+        };
+        difficultyButton.setImagePath(imagePath);
     }
 
 }
