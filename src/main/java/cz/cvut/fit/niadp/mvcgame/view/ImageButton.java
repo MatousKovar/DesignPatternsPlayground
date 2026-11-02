@@ -21,8 +21,8 @@ public class ImageButton {
     private boolean pressed;
 
     public ImageButton(IGameGraphics graphics, String imagePath, Position position, int height) {
-        this.graphics = Objects.requireNonNull(graphics, "Graphics must not be null");
-        this.imagePath = Objects.requireNonNull(imagePath, "Image path must not be null");
+        this.graphics = graphics;
+        this.imagePath = imagePath;
         setPosition(position);
         setHeight(height);
         this.command = null;
@@ -93,7 +93,6 @@ public class ImageButton {
     }
 
     public void setPosition(Position position) {
-        Objects.requireNonNull(position, "Position must not be null");
         this.position = new Position(position.getX(), position.getY());
         resetInteraction();
     }
@@ -103,16 +102,12 @@ public class ImageButton {
             throw new IllegalArgumentException("Button height must be positive");
         }
         ImageSize newSize = graphics.getImageSize(imagePath, height);
-        if (!Double.isFinite(newSize.width()) || newSize.width() <= 0
-                || !Double.isFinite(newSize.height()) || newSize.height() <= 0) {
-            throw new IllegalArgumentException("Button image dimensions must be positive and finite");
-        }
         this.height = height;
         this.size = newSize;
         resetInteraction();
     }
 
     public void setCommand(IButtonCommand buttonCommand){
-        this.command = Objects.requireNonNull(buttonCommand, "Command must not be null");
+        this.command = buttonCommand;
     }
 }
