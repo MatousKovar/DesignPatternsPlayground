@@ -2,6 +2,7 @@ package cz.cvut.fit.niadp.mvcgame.screen;
 
 import java.util.List;
 
+import cz.cvut.fit.niadp.mvcgame.MvcGame;
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.niadp.mvcgame.command.QuitButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.command.RestartButtonCommand;
@@ -11,11 +12,13 @@ public class GameEndState implements IAppState {
     private boolean win;
     private IGameGraphics gameGraphics;
     private final GameEndView view;
+    private final MvcGame mvcGame;
 
 
-    public GameEndState(IGameGraphics gameGraphics){
+    public GameEndState(IGameGraphics gameGraphics, MvcGame game){
         this.gameGraphics = gameGraphics;
         this.view = new GameEndView(gameGraphics);
+        this.mvcGame = game;
     }
     public void setWin(boolean win) {
         this.win = win;
@@ -36,7 +39,7 @@ public class GameEndState implements IAppState {
 
     @Override
     public void setCommands(AppStateManager appStateManager) {
-        view.setCommands(new RestartButtonCommand(), new QuitButtonCommand());
+        view.setCommands(new RestartButtonCommand(appStateManager,mvcGame), new QuitButtonCommand());
     }
 
     @Override

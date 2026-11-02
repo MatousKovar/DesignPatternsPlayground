@@ -30,6 +30,9 @@ public class MvcGame {
     public void generateLevel() {
         model.generateLevel();
     }
+    public void restartGame(){
+        model.restartGame();
+    }
 
     public boolean hasEnemyEscaped() {
         return model.hasEnemyEscaped();

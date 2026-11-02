@@ -188,4 +188,9 @@ public class GameModelProxy implements IGameModel{
     public void spawnNewEnemy() {
         subject.spawnNewEnemy();
     }
+
+    @Override
+    public void restartGame() {
+        subject.restartGame();
+    }
 }

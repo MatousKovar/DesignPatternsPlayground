@@ -19,7 +19,6 @@ public class LevelBuilder {
     private int enemyCount = MvcGameConfig.DEFAULT_ENEMY_COUNT;
     private int minX = MvcGameConfig.ENEMY_SPAWN_MIN_X;
     private int minY = MvcGameConfig.ENEMY_SPAWN_MIN_Y;
-    private int maxX = MvcGameConfig.ENEMY_SPAWN_MAX_X;
     private int maxY = MvcGameConfig.ENEMY_SPAWN_MAX_Y;
 
     public LevelBuilder(IGameObjectsFactory factory) {
