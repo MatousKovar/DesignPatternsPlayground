@@ -59,7 +59,7 @@ public class GameModel implements IGameModel{
         missiles = new HashSet<AbstractMissile>();
         enemies = new HashSet<AbstractEnemy>();
         impactAnimations = new HashSet<>();
-        movingStrategy = new RealMovingStrategy();
+        movingStrategy = new SimpleMovingStrategy();
         gameInfo = new GameInfo(cannon,movingStrategy);
         remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
         gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
@@ -415,7 +415,7 @@ public class GameModel implements IGameModel{
         missiles.clear();
         enemies.clear();
         impactAnimations.clear();
-        movingStrategy = new RealMovingStrategy();
+        movingStrategy = new SimpleMovingStrategy();
         gameInfo = new GameInfo(cannon,movingStrategy);
         remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
         gameInfo.setExplosiveShotsLeft(MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT);

@@ -2,6 +2,7 @@ package cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import cz.cvut.fit.niadp.mvcgame.abstractFactory.IGameObjectsFactory;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
@@ -19,6 +20,7 @@ public class CannonA extends AbstractCannon {
     protected int power;
     protected final List<AbstractMissile> shootingBatch;
     private final Object inittialMemento;
+    private Long nextShotAtNanos;
 
     private static class Memento {
         private final int positionX;
@@ -26,13 +28,16 @@ public class CannonA extends AbstractCannon {
         private final double angle;
         private final int power;
         private final IShootingMode shootingMode;
+        private final long remainingCooldownNanos;
 
-        private Memento(int positionX, int positionY, double angle, int power, IShootingMode shootingMode) {
+        private Memento(int positionX, int positionY, double angle, int power, IShootingMode shootingMode,
+                long remainingCooldownNanos) {
             this.positionX = positionX;
             this.positionY = positionY;
             this.angle = angle;
             this.power = power;
             this.shootingMode = shootingMode;
+            this.remainingCooldownNanos = remainingCooldownNanos;
         }
     }
 
@@ -49,7 +54,12 @@ public class CannonA extends AbstractCannon {
 
     @Override
     public Object createMemento() {
-        return new Memento(position.getX(), position.getY(), angle, power, shootingMode);
+        long remainingCooldownNanos = 0;
+        if (nextShotAtNanos != null) {
+            remainingCooldownNanos = Math.max(0, nextShotAtNanos - currentTimeNanos());
+        }
+        return new Memento(position.getX(), position.getY(), angle, power, shootingMode,
+            remainingCooldownNanos);
     }
 
     @Override
@@ -60,6 +70,8 @@ public class CannonA extends AbstractCannon {
         angle = snapshot.angle;
         power = snapshot.power;
         shootingMode = snapshot.shootingMode;
+        nextShotAtNanos = currentTimeNanos() + snapshot.remainingCooldownNanos;
+        shootingBatch.clear();
     }
 
     public void moveUp(){
@@ -72,8 +84,20 @@ public class CannonA extends AbstractCannon {
     }
     public List<AbstractMissile> shoot(){
         shootingBatch.clear();
+        long now = currentTimeNanos();
+        if (nextShotAtNanos != null && now - nextShotAtNanos < 0) {
+            return shootingBatch;
+        }
+
         shootingMode.shoot(this);
+        if (!shootingBatch.isEmpty()) {
+            nextShotAtNanos = now + TimeUnit.MILLISECONDS.toNanos(MvcGameConfig.CANNON_SHOT_COOLDOWN_MILLIS);
+        }
         return shootingBatch;
+    }
+
+    protected long currentTimeNanos() {
+        return System.nanoTime();
     }
 
     public void primitiveShoot(){

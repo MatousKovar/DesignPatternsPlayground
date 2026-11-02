@@ -14,6 +14,7 @@ public class MvcGameConfig {
 
     public static final int CANNON_POS_X = 50;
     public static final int CANNON_POS_Y = MAX_Y / 2;
+    public static final long CANNON_SHOT_COOLDOWN_MILLIS = 300;
 
     public static final int DEFAULT_ENEMY_COUNT = 15;
     public static final double ENEMY_MOVE_SPEED = 140.0;
