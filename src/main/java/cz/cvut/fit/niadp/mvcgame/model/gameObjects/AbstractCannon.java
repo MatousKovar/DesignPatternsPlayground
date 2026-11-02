@@ -35,6 +35,8 @@ public  abstract class AbstractCannon extends GameObject {
     
     public abstract void restoreMemento(Object memento);
 
+    public abstract void resetSettings();
+
     public void accept(IVisitor visitor){
         visitor.visit(this);
     }

@@ -422,6 +422,7 @@ public class GameModel implements IGameModel{
         unexecutedCommands.clear();
         executedCommands.clear();
         generateLevel();
+        cannon.resetSettings();
     }
 
     private <T extends GameObject> Map<T, Object> snapshotObjects(Set<T> objects) {

@@ -25,7 +25,7 @@ public class GameObjectsFactoryA implements IGameObjectsFactory{
 
     @Override
     public CannonA createCannon() {
-        return new CannonA(new Position(MvcGameConfig.CANNON_POS_X, MvcGameConfig.CANNON_POS_Y), this);
+        return new CannonA(new Position(MvcGameConfig.CANNON_POS_X, MvcGameConfig.CANNON_POS_Y), MvcGameConfig.INIT_ANGLE, MvcGameConfig.INIT_POWER, this);
     }
 
     @Override

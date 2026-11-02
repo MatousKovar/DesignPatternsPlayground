@@ -18,6 +18,7 @@ public class CannonA extends AbstractCannon {
     protected double angle;
     protected int power;
     protected final List<AbstractMissile> shootingBatch;
+    private final Object inittialMemento;
 
     private static class Memento {
         private final int positionX;
@@ -35,13 +36,15 @@ public class CannonA extends AbstractCannon {
         }
     }
 
-    public CannonA(Position position, IGameObjectsFactory gameObjectsFactory){
+    public CannonA(Position position, double angle, int power, IGameObjectsFactory gameObjectsFactory){
         this.position = position;
         this.gameObjectsFactory = gameObjectsFactory;
-        angle = MvcGameConfig.INIT_ANGLE;
-        power = MvcGameConfig.INIT_POWER;
+        this.angle = angle;
+        this.power = power;
         this.shootingMode = new SingleShootingMode();
         shootingBatch = new ArrayList<AbstractMissile>();
+
+        inittialMemento = createMemento();
     }
 
     @Override
@@ -118,5 +121,10 @@ public class CannonA extends AbstractCannon {
     @Override
     public int getCannonPower() {
         return this.power;
+    }
+
+    @Override
+    public void resetSettings() {
+        restoreMemento(inittialMemento);
     }
 }
