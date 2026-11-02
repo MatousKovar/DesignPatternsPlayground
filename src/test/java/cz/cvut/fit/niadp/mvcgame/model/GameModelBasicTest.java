@@ -82,7 +82,7 @@ public class GameModelBasicTest {
     @Test
     public void undoShotThatKillsEnemyRestoresEnemyAndScoreTest() {
         GameModel gameModel = new GameModel();
-        gameModel.toggleMovingStrategy(); // use deterministic, constant-step missile movement
+        gameModel.toggleMovingStrategy();
         AbstractEnemy enemy = spawnEnemyAt(
             gameModel,
             MvcGameConfig.CANNON_POS_X + 150,

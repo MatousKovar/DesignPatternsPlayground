@@ -359,7 +359,10 @@ public class GameModel implements IGameModel{
 
     public Object createMemento(){
         Map<IMovingStrategy, Object> strategies = new IdentityHashMap<>();
-        Object levelMemento = level.createMemento(currentTimeNanos());
+        Object levelMemento = null;
+        if (level != null) {
+            levelMemento = level.createMemento(currentTimeNanos());
+        }
         strategies.put(movingStrategy, movingStrategy.createMemento());
         for (AbstractMissile missile : missiles) {
             IMovingStrategy strategy = missile.getMovingStrategy();
@@ -388,7 +391,9 @@ public class GameModel implements IGameModel{
         explosiveShotEnabled = snapshot.explosiveShotEnabled();
         remainingExplosiveShots = snapshot.remainingExplosiveShots();
         level = snapshot.level();
-        level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());
+        if (level != null) {
+            level.restoreMemento(snapshot.levelMemento(), currentTimeNanos());
+        }
         cannon.restoreMemento(snapshot.cannonMemento());
         restoreObjects(missiles, snapshot.missiles());
         restoreObjects(enemies, snapshot.enemies());

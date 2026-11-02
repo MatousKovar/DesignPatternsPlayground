@@ -50,6 +50,10 @@ public abstract class AbstractMissile extends LifetimeLimitedGameObject {
         movingStrategy.updatePosition(this);
     }
 
+    /**
+     * Adds the displacement parameter to the cordinates of object
+     * @param displacement
+     */
     public void moveFromStart(Position displacement) {
         position.setX(initialPosition.getX() + displacement.getX());
         position.setY(initialPosition.getY() + displacement.getY());
