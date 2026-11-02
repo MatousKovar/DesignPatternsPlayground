@@ -17,6 +17,7 @@ public class LevelBuilder {
     private final IGameObjectsFactory factory;
 
     private int enemyCount = MvcGameConfig.DEFAULT_ENEMY_COUNT;
+    private Difficulty difficulty = Difficulty.MEDIUM;
     private int minX = MvcGameConfig.ENEMY_SPAWN_MIN_X;
     private int minY = MvcGameConfig.ENEMY_SPAWN_MIN_Y;
     private int maxY = MvcGameConfig.ENEMY_SPAWN_MAX_Y;
@@ -30,12 +31,18 @@ public class LevelBuilder {
         return this;
     }
 
+    public LevelBuilder setDifficulty(Difficulty difficulty) {
+        this.difficulty = Objects.requireNonNull(difficulty, "Difficulty must not be null");
+        return this;
+    }
+
     
     public Level build() {
-        List<EnemySpawn> spawns = new ArrayList<>(enemyCount);
+        int levelEnemyCount = Math.max(1, (int) Math.round(enemyCount * difficulty.getEnemyCountMultiplier()));
+        List<EnemySpawn> spawns = new ArrayList<>(levelEnemyCount);
         ThreadLocalRandom random = ThreadLocalRandom.current();
         long spawnTimeMillis = 0;
-        for (int i = 0; i < enemyCount; i++) {
+        for (int i = 0; i < levelEnemyCount; i++) {
             if (i > 0) {
                 spawnTimeMillis += nextSpawnIntervalMillis(random);
             }
@@ -43,13 +50,19 @@ public class LevelBuilder {
             placeEnemy(enemy, spawnTimeMillis, spawns, random);
             spawns.add(new EnemySpawn(enemy, spawnTimeMillis));
         }
-        return new Level(spawns);
+        return new Level(spawns, getEnemySpeed());
     }
 
     private long nextSpawnIntervalMillis(ThreadLocalRandom random) {
         double intervalMillis = MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS
             + random.nextGaussian() * MvcGameConfig.ENEMY_SPAWN_INTERVAL_STDDEV_MILLIS;
-        return Math.max(MvcGameConfig.ENEMY_MIN_SPAWN_INTERVAL_MILLIS, Math.round(intervalMillis));
+        double multiplier = difficulty.getSpawnIntervalMultiplier();
+        long minimumIntervalMillis = Math.max(1, Math.round(MvcGameConfig.ENEMY_MIN_SPAWN_INTERVAL_MILLIS * multiplier));
+        return Math.max(minimumIntervalMillis, Math.round(intervalMillis * multiplier));
+    }
+
+    private double getEnemySpeed() {
+        return MvcGameConfig.ENEMY_MOVE_SPEED * difficulty.getEnemySpeedMultiplier();
     }
 
     private void placeEnemy(AbstractEnemy enemy, long spawnTimeMillis, List<EnemySpawn> spawns, ThreadLocalRandom random) {
@@ -76,7 +89,7 @@ public class LevelBuilder {
             double elapsedSeconds = (spawnTimeMillis - spawn.spawnTimeMillis()) / 1_000.0;
             Hitbox existingHitbox = spawn.enemy().getHitbox();
             Position predictedPosition = spawn.enemy().positionAtTime(
-                MvcGameConfig.ENEMY_MOVE_SPEED, elapsedSeconds
+                getEnemySpeed(), elapsedSeconds
             );
             Hitbox predictedHitbox = new Hitbox(
                 predictedPosition,

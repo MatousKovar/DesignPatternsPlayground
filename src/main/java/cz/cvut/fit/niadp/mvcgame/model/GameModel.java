@@ -121,8 +121,12 @@ public class GameModel implements IGameModel{
 
     private void moveEnemies() {
         long now = currentTimeNanos();
+        double enemySpeed = MvcGameConfig.ENEMY_MOVE_SPEED;
+        if (level != null) {
+            enemySpeed = level.getEnemySpeed();
+        }
         for (AbstractEnemy enemy : enemies) {
-            enemy.update(MvcGameConfig.ENEMY_MOVE_SPEED, now);
+            enemy.update(enemySpeed, now);
         }
     }
 
@@ -189,7 +193,7 @@ public class GameModel implements IGameModel{
 
     @Override
     public void generateLevel() {
-        Level level = new LevelBuilder(factory).build();
+        Level level = new LevelBuilder(factory).setDifficulty(difficulty).build();
         loadLevel(level);
     }
 

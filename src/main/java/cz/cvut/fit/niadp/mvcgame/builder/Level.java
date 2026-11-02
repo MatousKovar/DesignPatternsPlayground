@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
 
 public class Level {
@@ -12,11 +13,21 @@ public class Level {
     private record Memento(Long elapsedNanos, List<SpawnMemento> pendingSpawns) {}
 
     private final List<EnemySpawn> enemySpawns;
+    private final double enemySpeed;
     private final List<EnemySpawn> pendingSpawns = new ArrayList<>();
     private Long startedAtNanos;
 
     public Level(List<EnemySpawn> enemySpawns) {
+        this(enemySpawns, MvcGameConfig.ENEMY_MOVE_SPEED);
+    }
+
+    public Level(List<EnemySpawn> enemySpawns, double enemySpeed) {
         this.enemySpawns = List.copyOf(enemySpawns);
+        this.enemySpeed = enemySpeed;
+    }
+
+    public double getEnemySpeed() {
+        return enemySpeed;
     }
 
     public List<EnemySpawn> getEnemySpawns() {

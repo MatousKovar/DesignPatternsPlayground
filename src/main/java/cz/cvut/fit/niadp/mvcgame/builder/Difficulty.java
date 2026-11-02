@@ -1,7 +1,7 @@
 package cz.cvut.fit.niadp.mvcgame.builder;
 
 public enum Difficulty {
-    EASY(0.7, 0.75, 1.3),
+    EASY(0.5, 0.5, 2.0),
     MEDIUM(1.0, 1.0, 1.0),
     HARD(1.4, 1.25, 0.75);
 
