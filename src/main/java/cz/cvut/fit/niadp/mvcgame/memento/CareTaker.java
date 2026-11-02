@@ -22,6 +22,10 @@ public class CareTaker {
         this.model = model;
     }
 
+    public void clearMementos() {
+        mementos.clear();
+    }
+
     public void createMemento(){
         if(model != null)
             mementos.add(model.createMemento());

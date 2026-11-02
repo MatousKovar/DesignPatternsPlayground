@@ -32,6 +32,7 @@ public class MvcGame {
     }
     public void restartGame(){
         model.restartGame();
+        CareTaker.getInstance().clearMementos();
     }
 
     public boolean hasEnemyEscaped() {

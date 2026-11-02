@@ -2,33 +2,46 @@ package cz.cvut.fit.niadp.mvcgame.model;
 import org.junit.Assert;
 import org.junit.Test;
 import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
-import java.lang.reflect.InvocationTargetException;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.MissileSkinType;
+import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.MissileA;
+import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 import java.lang.reflect.Method;
-import java.util.stream.IntStream;
 
 public class GameModelReflectionTest {
     private static final String MOVE_MISSILES_METHOD_NAME = "moveMissiles";
-    private static final int ITERATION_START_CONST = 1;
     private static final int MISSILE_COUNT = 50;
-    private static final int AIM_COUNT = 10;
     private static final int MOVE_COUNT = MvcGameConfig.MAX_X / MvcGameConfig.MOVE_STEP + 1;
-    private static final int EXPECTED_MISSILES_COUNT = 0;
 
     @Test
-    public void moveMissilesTest() throws NoSuchMethodException {
+    public void moveMissilesTest() throws ReflectiveOperationException {
         GameModel model = new GameModel();
-        model.toggleMovingStrategy();
         Method method = model.getClass().getDeclaredMethod(MOVE_MISSILES_METHOD_NAME);
         method.setAccessible(true);
-        IntStream.rangeClosed(ITERATION_START_CONST, AIM_COUNT).forEach(i->model.aimCannonUp());
-        IntStream.rangeClosed(ITERATION_START_CONST, MISSILE_COUNT).forEach(i->model.cannonShoot());
-        Assert.assertEquals(MISSILE_COUNT + 1, model.getGameObjects().size());
-        IntStream.rangeClosed(ITERATION_START_CONST, MOVE_COUNT).forEach(i-> {
-            try {
-                method.invoke(model);
-            } catch (IllegalAccessException | InvocationTargetException ignored) {}
-        });
+
+        for (int i = 0; i < MISSILE_COUNT; i++) {
+            model.getMissiles().add(new MissileA(
+                new Position(MvcGameConfig.CANNON_POS_X, MvcGameConfig.CANNON_POS_Y),
+                0,
+                MvcGameConfig.INIT_POWER,
+                new SimpleMovingStrategy(),
+                MissileSkinType.FIRST
+            ));
+        }
+        Assert.assertEquals(MISSILE_COUNT, model.getMissiles().size());
+
+        method.invoke(model);
+        for (var missile : model.getMissiles()) {
+            Assert.assertEquals(
+                MvcGameConfig.CANNON_POS_X + MvcGameConfig.MOVE_STEP,
+                missile.getPosition().getX()
+            );
+        }
+
+        for (int i = 1; i < MOVE_COUNT; i++) {
+            method.invoke(model);
+        }
         method.setAccessible(false);
-        Assert.assertEquals(EXPECTED_MISSILES_COUNT, model.getGameObjects().size() - 1); //gameObjects contain cannon
+        Assert.assertTrue(model.getMissiles().isEmpty());
+        Assert.assertEquals(1, model.getGameObjects().size());
     }
 }
