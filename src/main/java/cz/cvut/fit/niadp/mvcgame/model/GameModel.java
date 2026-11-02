@@ -49,7 +49,7 @@ public class GameModel implements IGameModel{
     protected int score;
     private GameInfo gameInfo;
     private boolean explosiveShotEnabled;
-    private int remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
+    private int remainingExplosiveShots;
 
     public GameModel(){
         factory = new GameObjectsFactoryA(this);
@@ -61,6 +61,7 @@ public class GameModel implements IGameModel{
         impactAnimations = new HashSet<>();
         movingStrategy = new RealMovingStrategy();
         gameInfo = new GameInfo(cannon,movingStrategy);
+        remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
         gameInfo.setExplosiveShotsLeft(remainingExplosiveShots);
         unexecutedCommands = new LinkedBlockingQueue<>();
         executedCommands = new Stack<>();
@@ -407,6 +408,20 @@ public class GameModel implements IGameModel{
         executedCommands.addAll(snapshot.commandHistory());
         unexecutedCommands.clear();
         notifyObservers();
+    }
+
+    public void restartGame(){
+        score = 0;
+        observers.clear();
+        missiles.clear();
+        enemies.clear();
+        impactAnimations.clear();
+        movingStrategy = new RealMovingStrategy();
+        gameInfo = new GameInfo(cannon,movingStrategy);
+        remainingExplosiveShots = MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT;
+        gameInfo.setExplosiveShotsLeft(MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT);
+        unexecutedCommands.clear();
+        executedCommands.clear();
     }
 
     private <T extends GameObject> Map<T, Object> snapshotObjects(Set<T> objects) {
