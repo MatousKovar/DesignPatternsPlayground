@@ -1,6 +1,5 @@
 package cz.cvut.fit.niadp.mvcgame.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -33,9 +32,6 @@ import cz.cvut.fit.niadp.mvcgame.strategy.RealMovingStrategy;
 import cz.cvut.fit.niadp.mvcgame.strategy.SimpleMovingStrategy;
 
 public class GameModel implements IGameModel{
-    private static final int TRAJECTORY_POINT_COUNT = 20;
-    private static final double TRAJECTORY_TIME_STEP = 0.5;
-
     private final AbstractCannon cannon;
     private final Set<AbstractMissile> missiles;
     private final Set<IObserver> observers;
@@ -148,31 +144,7 @@ public class GameModel implements IGameModel{
 
     @Override
     public List<Position> getTrajectoryPreview() {
-        if (!(movingStrategy instanceof RealMovingStrategy)
-                && !(movingStrategy instanceof SimpleMovingStrategy)) {
-            return List.of();
-        }
-
-        List<Position> points = new ArrayList<>(TRAJECTORY_POINT_COUNT);
-        Position origin = cannon.getCannonPosition();
-        double angle = cannon.getCannonAngle();
-        int power = cannon.getCannonPower();
-        Position previousPoint = origin;
-        for (int i = 1; i <= TRAJECTORY_POINT_COUNT; i++) {
-            double time = i * TRAJECTORY_TIME_STEP;
-            Position displacement = movingStrategy.calculateDisplacement(angle, power, time);
-            Position base = origin;
-            if (movingStrategy instanceof SimpleMovingStrategy) {
-                base = previousPoint;
-            }
-            Position point = new Position(
-                base.getX() + displacement.getX(),
-                base.getY() + displacement.getY()
-            );
-            points.add(point);
-            previousPoint = point;
-        }
-        return points;
+        return cannon.getTrajectoryPreview(movingStrategy);
     }
 
     @Override
