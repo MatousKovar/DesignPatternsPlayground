@@ -12,9 +12,9 @@ public class GameEndView extends AbstractButtonView{
         NONE, REPLAY, QUIT
     }
 
-    private static final double BUTTON_HEIGHT_RATIO = 0.25;
-    private static final int BUTTON_MARGIN = 10;
-    private static final int RESULT_TEXT_MARGIN = 30;
+    private static final double BUTTON_HEIGHT_RATIO = 0.18;
+    private static final int BUTTON_MARGIN = 70;
+    private static final int RESULT_FONT_SIZE = 64;
     private final ImageButton replayButton;
     private final ImageButton quitButton;
     private final IGameGraphics gameGraphics;
@@ -24,19 +24,18 @@ public class GameEndView extends AbstractButtonView{
         this.gameGraphics = graphics;
         ImageButtonFactory buttonFactory = new ImageButtonFactory(gameGraphics);
         int middleX = MvcGameConfig.MAX_X / 2;
-        int middleY = MvcGameConfig.MAX_Y / 2;
+        int middleY = (int) Math.round(MvcGameConfig.MAX_Y * 0.55);
         int buttonHeight = (int) Math.round(MvcGameConfig.MAX_Y * BUTTON_HEIGHT_RATIO);
-        int buttonGroupHeight = buttonHeight * 2 + BUTTON_MARGIN;
-        int firstButtonY = middleY - buttonGroupHeight / 2;
+        int buttonOffset = (buttonHeight + BUTTON_MARGIN) / 2;
 
         this.replayButton = buttonFactory.create(
-            MvcGameResources.MENU_IMAGE,
-            new Position(middleX, firstButtonY + buttonHeight / 2),
+            MvcGameResources.PLAY_IMAGE,
+            new Position(middleX - buttonOffset, middleY),
             buttonHeight
         );
         this.quitButton = buttonFactory.create(
             MvcGameResources.QUIT_IMAGE,
-            new Position(middleX, firstButtonY + buttonHeight + BUTTON_MARGIN + buttonHeight / 2),
+            new Position(middleX + buttonOffset, middleY),
             buttonHeight
         );
         registerButton(replayButton);
@@ -53,12 +52,8 @@ public class GameEndView extends AbstractButtonView{
             resultText = "You won";
         }
 
-        Position buttonPosition = replayButton.getPosition();
-        Position textPosition = new Position(
-            buttonPosition.getX(),
-            buttonPosition.getY() - RESULT_TEXT_MARGIN
-        );
-        gameGraphics.drawText(resultText, textPosition);
+        Position textPosition = new Position(MvcGameConfig.MAX_X / 2, MvcGameConfig.MAX_Y / 3);
+        gameGraphics.drawCenteredText(resultText, textPosition, RESULT_FONT_SIZE);
         renderButtons();
     }
 

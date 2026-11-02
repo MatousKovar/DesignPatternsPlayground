@@ -11,6 +11,7 @@ public interface IGameGraphicsImplementor {
     void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight);
     void drawImageRegion(String path,Position destination,int sourceX,int sourceY,int sourceWidth,int sourceHeight, int destinationWidth, int destinationHeight);
     void drawText(String text, Position position);
+    void drawCenteredText(String text, Position center, double fontSize);
     void drawRectangle(Position leftTop, Position rightBottom);
     void drawCircle(Position center, int radius);
     void drawLine(Position startPosition, Position endPosition);

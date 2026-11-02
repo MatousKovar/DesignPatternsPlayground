@@ -9,6 +9,10 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.geometry.VPos;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 
 public class JavaFxGraphics  implements IGameGraphicsImplementor {
     
@@ -86,6 +90,23 @@ public class JavaFxGraphics  implements IGameGraphicsImplementor {
     @Override
     public void drawText(String text, Position position) {
         graphicsContext.fillText(text, position.getX(), position.getY());
+    }
+
+    @Override
+    public void drawCenteredText(String text, Position center, double fontSize) {
+        graphicsContext.save();
+        try {
+            graphicsContext.setFont(Font.font("System", FontWeight.BOLD, fontSize));
+            graphicsContext.setTextAlign(TextAlignment.CENTER);
+            graphicsContext.setTextBaseline(VPos.CENTER);
+            graphicsContext.setStroke(Color.rgb(30, 30, 30));
+            graphicsContext.setLineWidth(3);
+            graphicsContext.setFill(Color.WHITE);
+            graphicsContext.strokeText(text, center.getX(), center.getY());
+            graphicsContext.fillText(text, center.getX(), center.getY());
+        } finally {
+            graphicsContext.restore();
+        }
     }
 
     @Override

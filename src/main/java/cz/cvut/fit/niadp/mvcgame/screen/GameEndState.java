@@ -10,7 +10,7 @@ import cz.cvut.fit.niadp.mvcgame.view.GameEndView;
 
 public class GameEndState implements IAppState {
     private boolean win;
-    private IGameGraphics gameGraphics;
+    private final IGameGraphics gameGraphics;
     private final GameEndView view;
     private final MvcGame mvcGame;
 

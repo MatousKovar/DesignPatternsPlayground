@@ -25,6 +25,7 @@ public class AppStateManager{
 
     public void initCommands(){
         menuState.setCommands(this);
+        endGameState.setCommands(this);
     }
 
     public void processPressedKeys(List<String> keys){

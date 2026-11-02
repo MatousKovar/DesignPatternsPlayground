@@ -412,7 +412,6 @@ public class GameModel implements IGameModel{
 
     public void restartGame(){
         score = 0;
-        observers.clear();
         missiles.clear();
         enemies.clear();
         impactAnimations.clear();
@@ -422,6 +421,7 @@ public class GameModel implements IGameModel{
         gameInfo.setExplosiveShotsLeft(MvcGameConfig.EXPLOSIVE_SHOTS_IN_LEVEL_LIMIT);
         unexecutedCommands.clear();
         executedCommands.clear();
+        generateLevel();
     }
 
     private <T extends GameObject> Map<T, Object> snapshotObjects(Set<T> objects) {

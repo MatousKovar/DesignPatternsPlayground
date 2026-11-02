@@ -23,6 +23,7 @@ public interface IGameGraphics {
     }
 
     void drawText(String text, Position position);
+    void drawCenteredText(String text, Position center, double fontSize);
     void drawRectangle(Position leftTop, Position rightBottom);
     void drawCircle(Position center, int radius);
     void drawImageRegion(

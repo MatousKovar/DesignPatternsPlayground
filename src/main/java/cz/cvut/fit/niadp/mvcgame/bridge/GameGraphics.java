@@ -36,6 +36,11 @@ public class GameGraphics implements IGameGraphics {
     }
 
     @Override
+    public void drawCenteredText(String text, Position center, double fontSize) {
+        implementor.drawCenteredText(text, center, fontSize);
+    }
+
+    @Override
     public void drawRectangle(Position leftTop, Position rightBottom) {
         implementor.drawRectangle(leftTop, rightBottom);
     }
