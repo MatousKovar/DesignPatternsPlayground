@@ -4,6 +4,7 @@ import java.util.List;
 
 import cz.cvut.fit.niadp.mvcgame.MvcGame;
 import cz.cvut.fit.niadp.mvcgame.bridge.IGameGraphics;
+import cz.cvut.fit.niadp.mvcgame.builder.Difficulty;
 import cz.cvut.fit.niadp.mvcgame.command.QuitButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.command.StartGameButtonCommand;
 import cz.cvut.fit.niadp.mvcgame.view.MenuView;
@@ -12,11 +13,21 @@ public class MenuState implements IAppState{
 
     private final MenuView view;
     private final MvcGame mvcGame;
+    private Difficulty difficulty = Difficulty.MEDIUM;
 
     public MenuState(IGameGraphics graphics, MvcGame mvcGame){
         this.view = new MenuView(graphics);
         this.mvcGame = mvcGame;
     }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void nextDifficulty() {
+        difficulty = difficulty.next();
+    }
+
     @Override
     public void setCommands(AppStateManager appStateManager){
         view.setCommands(new StartGameButtonCommand(appStateManager, mvcGame), new QuitButtonCommand());

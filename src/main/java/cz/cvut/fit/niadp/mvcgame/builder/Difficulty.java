@@ -26,4 +26,17 @@ public enum Difficulty {
     public double getSpawnIntervalMultiplier() {
         return spawnIntervalMultiplier;
     }
+
+    public Difficulty next() {
+        switch (this) {
+            case EASY:
+                return MEDIUM;
+            case MEDIUM:
+                return HARD;
+            case HARD:
+                return EASY;
+            default:
+                return MEDIUM;
+        }
+    }
 }
