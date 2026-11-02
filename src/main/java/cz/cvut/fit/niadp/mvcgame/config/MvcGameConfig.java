@@ -18,7 +18,9 @@ public class MvcGameConfig {
 
     public static final int DEFAULT_ENEMY_COUNT = 15;
     public static final double ENEMY_MOVE_SPEED = 140.0;
-    public static final long ENEMY_SPAWN_INTERVAL_MILLIS = 3_000;
+    public static final long ENEMY_SPAWN_INTERVAL_MILLIS = 1_000;
+    public static final double ENEMY_SPAWN_INTERVAL_STDDEV_MILLIS = ENEMY_SPAWN_INTERVAL_MILLIS * 0.2;
+    public static final long ENEMY_MIN_SPAWN_INTERVAL_MILLIS = 250;
     public static final int ENEMY_SPAWN_MIN_X = 600;
     public static final int ENEMY_SPAWN_MIN_Y = 150;
     public static final int ENEMY_SPAWN_MAX_X = 1300;

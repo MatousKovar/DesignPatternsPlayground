@@ -34,13 +34,22 @@ public class LevelBuilder {
     public Level build() {
         List<EnemySpawn> spawns = new ArrayList<>(enemyCount);
         ThreadLocalRandom random = ThreadLocalRandom.current();
+        long spawnTimeMillis = 0;
         for (int i = 0; i < enemyCount; i++) {
+            if (i > 0) {
+                spawnTimeMillis += nextSpawnIntervalMillis(random);
+            }
             AbstractEnemy enemy = factory.createEnemy(new Position(minX, minY));
-            long spawnTimeMillis = i * MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS;
             placeEnemy(enemy, spawnTimeMillis, spawns, random);
             spawns.add(new EnemySpawn(enemy, spawnTimeMillis));
         }
         return new Level(spawns);
+    }
+
+    private long nextSpawnIntervalMillis(ThreadLocalRandom random) {
+        double intervalMillis = MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS
+            + random.nextGaussian() * MvcGameConfig.ENEMY_SPAWN_INTERVAL_STDDEV_MILLIS;
+        return Math.max(MvcGameConfig.ENEMY_MIN_SPAWN_INTERVAL_MILLIS, Math.round(intervalMillis));
     }
 
     private void placeEnemy(AbstractEnemy enemy, long spawnTimeMillis, List<EnemySpawn> spawns, ThreadLocalRandom random) {

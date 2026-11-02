@@ -11,7 +11,6 @@ import cz.cvut.fit.niadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.niadp.mvcgame.model.GameModel;
 import cz.cvut.fit.niadp.mvcgame.model.Position;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.AbstractEnemy;
-import cz.cvut.fit.niadp.mvcgame.model.gameObjects.Hitbox;
 import cz.cvut.fit.niadp.mvcgame.model.gameObjects.familyA.EnemyA;
 
 public class LevelBuilderTest {
@@ -32,10 +31,16 @@ public class LevelBuilderTest {
 
         Assert.assertEquals(8, createdEnemies.size());
         Assert.assertEquals(8, level.getEnemySpawns().size());
+        Assert.assertEquals(0, level.getEnemySpawns().get(0).spawnTimeMillis());
         for (int i = 0; i < createdEnemies.size(); i++) {
             EnemySpawn spawn = level.getEnemySpawns().get(i);
             Assert.assertSame(createdEnemies.get(i), spawn.enemy());
-            Assert.assertEquals(i * MvcGameConfig.ENEMY_SPAWN_INTERVAL_MILLIS, spawn.spawnTimeMillis());
+            if (i > 0) {
+                long previousSpawnTime = level.getEnemySpawns().get(i - 1).spawnTimeMillis();
+                Assert.assertTrue(
+                    spawn.spawnTimeMillis() - previousSpawnTime >= MvcGameConfig.ENEMY_MIN_SPAWN_INTERVAL_MILLIS
+                );
+            }
         }
     }
 }
